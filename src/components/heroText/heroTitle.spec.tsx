@@ -6,6 +6,12 @@ describe('Hero component tests', () => {
         render(<HeroTitle title="Hero" />);
         const linkElement = screen.getByText('Hero');
         expect(linkElement).toBeInTheDocument();
-      });     
+      });  
+      
+      test('sub components: Test2', () => {
+        render(<HeroTitle />);
+        const linkElement = screen.getByText('Vahid');
+        expect(linkElement).toBeInTheDocument();
+      }); 
 })
     
