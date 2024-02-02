@@ -13,5 +13,9 @@ describe('Hero component tests', () => {
         const linkElement = screen.getByText('Vahid');
         expect(linkElement).toBeInTheDocument();
       }); 
+      test('sub components: Test3', () => {
+        const view = render(<HeroTitle />);
+        expect(view).toMatchSnapshot();
+    });
 })
     
