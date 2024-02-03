@@ -7,18 +7,17 @@ const Listing: React.FC = () => {
     useEffect(() => {
         fetch('https://jsonplaceholder.typicode.com/users')
             .then(res => res.json())
-            .then(res => setUsers(res))
+            .then(res => setUsers(res?.map((r: any) => r.name)))
             .catch(err => setError(err))
     }, [])
 
-    console.log(users)
 
     return (
         <div>
             <h1>Users</h1>
             <div>
-                {!error && users && users.map((user: any) =>
-                    <p style={{ background: 'lightslategray' }} key={user.id}>{user.name}</p>
+                {!error && users && users.map((user: any, i) =>
+                    <p style={{ background: 'lightslategray' }} key={i}>{user}</p>
                 )}
             </div>
         </div>
