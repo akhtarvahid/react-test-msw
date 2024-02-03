@@ -1,35 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
+import { FormField } from '../../App';
+
+
 
 type CreateFormType = {
+  colorSetter: (values: FormField) => any;
 }
 
-const CreateForm: React.FC<CreateFormType> = () => {
+const CreateForm: React.FC<CreateFormType> = ({ colorSetter }) => {
+  const [formValue, setFormValues] = useState<FormField>({
+    name: '',
+    location: '',
+    color: ''
+  })
+
   return (
     <Form>
       <Row className="justify-content-center">
         <Col sm={6}>
           <Col sm={12}>
-            <Form.Group controlId="formName" className="mb-3">
+            <Form.Group className="mb-3">
               <Form.Label htmlFor="enterName">Enter name</Form.Label>
               <InputGroup className="mb-3">
                 <Form.Control
                   aria-label="Enter name"
                   aria-describedby="inputGroup-sizing-default"
                   placeholder='Enter name'
+                  onChange={(e) => setFormValues(values => ({...values, name: e.target.value }))}
                 />
               </InputGroup>
             </Form.Group>
           </Col>
           <Col sm={12}>
-            <Form.Group controlId="formCountry" className="mb-3">
+            <Form.Group className="mb-3">
               <Form.Label htmlFor="enterLocation">
                 Select location
               </Form.Label>
-              <Form.Select aria-label="Default select example">
+              <Form.Select aria-label="location" onChange={(e) => setFormValues(values => ({...values, location: e.target.value }))}>
                 <option>Select country</option>
                 <option value="india">India</option>
                 <option value="uae">UAE</option>
@@ -42,15 +54,17 @@ const CreateForm: React.FC<CreateFormType> = () => {
               Select favourite color
             </Form.Label>
             <Row sm={12}>
-              <Col sm={3}><Form.Label htmlFor="exampleColorInput">Color picker</Form.Label></Col>
+              <Col sm={3}><Form.Label htmlFor="colorInput">Color picker</Form.Label></Col>
               <Col sm={9}>
                 <Form.Control
-                  type="color"
-                  id="exampleColorInput"
-                  defaultValue="#42bca8"
-                  title="Choose your color"
+                  aria-label="Color picker"
+                  title="Type your color"
+                  onChange={(e) => setFormValues(values => ({...values, color: e.target.value }))}
                 />
               </Col>
+            </Row>
+            <Row>
+              <Button variant="primary" onClick={() => colorSetter(formValue)}>Submit</Button>
             </Row>
           </Col>
         </Col>

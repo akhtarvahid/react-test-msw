@@ -33,7 +33,6 @@ Object {
                     aria-describedby="inputGroup-sizing-default"
                     aria-label="Enter name"
                     class="form-control"
-                    id="formName"
                     placeholder="Enter name"
                   />
                 </div>
@@ -52,9 +51,8 @@ Object {
                   Select location
                 </label>
                 <select
-                  aria-label="Default select example"
+                  aria-label="location"
                   class="form-select"
-                  id="formCountry"
                 >
                   <option>
                     Select country
@@ -94,7 +92,7 @@ Object {
                 >
                   <label
                     class="form-label"
-                    for="exampleColorInput"
+                    for="colorInput"
                   >
                     Color picker
                   </label>
@@ -103,13 +101,21 @@ Object {
                   class="col-sm-9"
                 >
                   <input
-                    class="form-control form-control-color"
-                    id="exampleColorInput"
-                    title="Choose your color"
-                    type="color"
-                    value="#42bca8"
+                    aria-label="Color picker"
+                    class="form-control"
+                    title="Type your color"
                   />
                 </div>
+              </div>
+              <div
+                class="row"
+              >
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                >
+                  Submit
+                </button>
               </div>
             </div>
           </div>
@@ -146,7 +152,6 @@ Object {
                   aria-describedby="inputGroup-sizing-default"
                   aria-label="Enter name"
                   class="form-control"
-                  id="formName"
                   placeholder="Enter name"
                 />
               </div>
@@ -165,9 +170,8 @@ Object {
                 Select location
               </label>
               <select
-                aria-label="Default select example"
+                aria-label="location"
                 class="form-select"
-                id="formCountry"
               >
                 <option>
                   Select country
@@ -207,7 +211,7 @@ Object {
               >
                 <label
                   class="form-label"
-                  for="exampleColorInput"
+                  for="colorInput"
                 >
                   Color picker
                 </label>
@@ -216,13 +220,21 @@ Object {
                 class="col-sm-9"
               >
                 <input
-                  class="form-control form-control-color"
-                  id="exampleColorInput"
-                  title="Choose your color"
-                  type="color"
-                  value="#42bca8"
+                  aria-label="Color picker"
+                  class="form-control"
+                  title="Type your color"
                 />
               </div>
+            </div>
+            <div
+              class="row"
+            >
+              <button
+                class="btn btn-primary"
+                type="button"
+              >
+                Submit
+              </button>
             </div>
           </div>
         </div>
