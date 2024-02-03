@@ -1,71 +1,71 @@
 import { fireEvent, logRoles, render, screen } from '@testing-library/react';
 import CreateForm from '../CreateForm';
-import { log } from 'console';
 import userEvent from '@testing-library/user-event';
 import user from '@testing-library/user-event'
 describe('CreateForm component tests', () => {
-    const mockFn = jest.fn();
+    const submitHandlerMock = jest.fn();
 
     test('sub components: Test1', () => {
-        const view = render(<CreateForm colorSetter={mockFn} />);
+        const view = render(<CreateForm colorSetter={submitHandlerMock} />);
         expect(view).toMatchSnapshot();
     });
 
     test('TextBox available: Test2', () => {
-        render(<CreateForm colorSetter={mockFn} />);
-        const nameEl = screen.getByRole('textbox', { name: 'Enter name' });
-        expect(nameEl).toBeInTheDocument();
+        render(<CreateForm colorSetter={submitHandlerMock} />);
+        const nameInputElem = screen.getByRole('textbox', { name: 'Enter name' });
+        expect(nameInputElem).toBeInTheDocument();
 
-        logRoles(nameEl)
+        logRoles(nameInputElem)
 
-        const nameLabel = screen.getByLabelText('Enter name');
-        expect(nameLabel).toBeInTheDocument();
-        logRoles(nameLabel)
+        const nameInputLabel = screen.getByLabelText('Enter name');
+        expect(nameInputLabel).toBeInTheDocument();
+        logRoles(nameInputLabel)
 
-        const loactionEl = screen.getByRole('combobox');
-        expect(loactionEl).toBeInTheDocument();
-        logRoles(loactionEl)
+        const loactionSelectElem = screen.getByRole('combobox');
+        expect(loactionSelectElem).toBeInTheDocument();
+        logRoles(loactionSelectElem)
 
-        const colorEl = screen.getByLabelText('Color picker');
-        expect(colorEl).toBeInTheDocument();
+        const colorInputElem = screen.getByLabelText('Color picker');
+        expect(colorInputElem).toBeInTheDocument();
     });
 
     test('TextBox Change event: Test3', () => {
-        render(<CreateForm colorSetter={mockFn} />);
-        const nameEl = screen.getByRole('textbox', {
+        render(<CreateForm colorSetter={submitHandlerMock} />);
+        const nameInputElem = screen.getByRole('textbox', {
             name: "Enter name"
         });
-        fireEvent.change(nameEl, { target: { value: 'xyz' } })
-        expect(nameEl).toBeInTheDocument();
+        fireEvent.change(nameInputElem, { target: { value: 'xyz' } })
+        expect(nameInputElem).toBeInTheDocument();
     });
 
     test('TextBox Location change event: Test4', () => {
-        render(<CreateForm colorSetter={mockFn} />);
-        const nameEl = screen.getByRole('combobox');
-        fireEvent.change(nameEl, { target: { value: 'India' } })
-        expect(nameEl).toBeInTheDocument();
+        render(<CreateForm colorSetter={submitHandlerMock} />);
+        const nameInputElem = screen.getByRole('combobox');
+        fireEvent.change(nameInputElem, { target: { value: 'India' } })
+        expect(nameInputElem).toBeInTheDocument();
     });
     test('TextBox Color change event: Test5', () => {
-        render(<CreateForm colorSetter={mockFn} />);
-        const colorEl = screen.getByRole('textbox', {
+        render(<CreateForm colorSetter={submitHandlerMock} />);
+        const colorInputElem = screen.getByRole('textbox', {
             name: "Color picker"
         });
-        fireEvent.change(colorEl, { target: { value: 'abc' } })
-        expect(colorEl).toBeInTheDocument();
+        fireEvent.change(colorInputElem, { target: { value: 'abc' } })
+        expect(colorInputElem).toBeInTheDocument();
     });
 
     test('TextBox Submit button: Test6', async () => {
         user.setup();
-        render(<CreateForm colorSetter={mockFn} />);
+        render(<CreateForm colorSetter={submitHandlerMock} />);
         const submitBtn = screen.getByRole('button', {
             name: "Submit"
         });
         await user.click(submitBtn);
         expect(submitBtn).toBeInTheDocument();
-        const colorEl = screen.getByRole('textbox', {
+        const colorInputElem = screen.getByRole('textbox', {
             name: "Color picker"
         });
-        await userEvent.clear(colorEl);
-        expect(colorEl).toHaveValue('');
+        await userEvent.clear(colorInputElem);
+        expect(colorInputElem).toHaveValue('');
+        expect(submitHandlerMock).toHaveBeenCalledTimes(1);
     });
 })
