@@ -20,6 +20,11 @@ function App() {
     <div className="App" data-testid="app">
       <HeroTitle title="Hero Title" />
       <CreateForm colorSetter={colorSetter} />
+      <div data-testid="lists">
+      {favColors.map((color, i) => 
+        <div key={`${color.name}: ${i}`}>{color.name}</div>  
+      )}
+      </div>
     </div>
   );
 }

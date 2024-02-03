@@ -31,7 +31,7 @@ const CreateForm: React.FC<CreateFormType> = ({ colorSetter }) => {
                   aria-label="Enter name"
                   aria-describedby="inputGroup-sizing-default"
                   placeholder='Enter name'
-                  onChange={(e) => setFormValues(values => ({...values, name: e.target.value }))}
+                  onChange={(e) => setFormValues(values => ({ ...values, name: e.target.value }))}
                 />
               </InputGroup>
             </Form.Group>
@@ -41,7 +41,7 @@ const CreateForm: React.FC<CreateFormType> = ({ colorSetter }) => {
               <Form.Label htmlFor="enterLocation">
                 Select location
               </Form.Label>
-              <Form.Select aria-label="location" onChange={(e) => setFormValues(values => ({...values, location: e.target.value }))}>
+              <Form.Select aria-label="location" onChange={(e) => setFormValues(values => ({ ...values, location: e.target.value }))}>
                 <option>Select country</option>
                 <option value="india">India</option>
                 <option value="uae">UAE</option>
@@ -59,7 +59,7 @@ const CreateForm: React.FC<CreateFormType> = ({ colorSetter }) => {
                 <Form.Control
                   aria-label="Color picker"
                   title="Type your color"
-                  onChange={(e) => setFormValues(values => ({...values, color: e.target.value }))}
+                  onChange={(e) => setFormValues(values => ({ ...values, color: e.target.value }))}
                 />
               </Col>
             </Row>
