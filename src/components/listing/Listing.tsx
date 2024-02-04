@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 const Listing: React.FC = () => {
     const [users, setUsers] = useState<string[]>([]);
     const [fetching, setFetching] = useState<boolean>(false);
+    const [error, setError] = useState<null | string>('');
 
     useEffect(() => {
         setFetching(true);
@@ -14,6 +15,7 @@ const Listing: React.FC = () => {
                 localStorage.setItem('names', names);
                 setFetching(false);
             })
+            .catch(() => setError('Something happened'))
     }, [])
 
     if (fetching) {
@@ -24,9 +26,9 @@ const Listing: React.FC = () => {
         <div>
             <h1>Users</h1>
             <ul>
-                {users && users.map((user: any, i) =>
+                {!error ? users && users.map((user: any, i) =>
                     <li style={{ background: 'lightslategray' }} key={i}>{user}</li>
-                )}
+                ): <div>Something happened</div>}
             </ul>
         </div>
     )

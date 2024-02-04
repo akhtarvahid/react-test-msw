@@ -15,15 +15,15 @@ describe('CreateForm component tests', () => {
         const nameInputElem = screen.getByRole('textbox', { name: 'Enter name' });
         expect(nameInputElem).toBeInTheDocument();
 
-        logRoles(nameInputElem)
+        //logRoles(nameInputElem)
 
         const nameInputLabel = screen.getByLabelText('Enter name');
         expect(nameInputLabel).toBeInTheDocument();
-        logRoles(nameInputLabel)
+        //logRoles(nameInputLabel)
 
         const loactionSelectElem = screen.getByRole('combobox');
         expect(loactionSelectElem).toBeInTheDocument();
-        logRoles(loactionSelectElem)
+        //logRoles(loactionSelectElem)
 
         const colorInputElem = screen.getByLabelText('Color picker');
         expect(colorInputElem).toBeInTheDocument();

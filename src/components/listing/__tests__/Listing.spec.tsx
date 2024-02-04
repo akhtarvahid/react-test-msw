@@ -25,4 +25,11 @@ describe('Listing component tests', () => {
         const getfromLocalStorage = localStorage.getItem('names')?.split(',') || [];
         expect(getfromLocalStorage[0]).toEqual(fakeUserResponse[0]);
     });
+
+    test('Listing: Error Test 4', async () => {
+        
+        // render(<Listing />);
+        // const error = await screen.findByText('Something happened');
+        // expect(error).toBeInTheDocument();
+    });
 })

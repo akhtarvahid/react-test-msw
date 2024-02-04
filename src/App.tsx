@@ -16,7 +16,6 @@ function App() {
      setFavColors((colors: any) => ([fields, ...colors]))
   }
 
-  console.log(favColors)
   return (
     <div className="App" data-testid="app">
       <HeroTitle title="Hero Title" />
