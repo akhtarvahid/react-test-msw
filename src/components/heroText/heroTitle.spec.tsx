@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import HeroTitle from './heroTitle';
-import { log } from 'console';
 
 describe('Hero component tests', () => {
   test('sub components: Test1', () => {
