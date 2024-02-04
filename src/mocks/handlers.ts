@@ -9,13 +9,9 @@ export const handlers = [
 
     http.get('/posts', ({ request, params, cookies }) => {
         return HttpResponse.json([
-            {
-                name: "Leanne Graham"
-            }, {
-                name: "Ervin Howell"
-            }, {
-                name: "Clementine Bauch"
-            }
+            "Leanne Graham",
+            "Ervin Howell",
+            "Clementine Bauch"
         ])
     })
 ]

@@ -10,14 +10,16 @@ const Listing: React.FC = () => {
         fetch('https://jsonplaceholder.typicode.com/users')
             .then(res => res.json())
             .then(res => { 
-                setUsers(res?.map((r: any) => r.name));
+                const names = res?.map((r: any) => r.name);
+                setUsers(names);
+                localStorage.setItem('names', names);
                 setFetching(false);   
             })
             .catch(err => setError(err))
     }, [])
 
     if(fetching) {
-        <h1>Fetching latest posts...</h1>
+        return <h1>Fetching latest posts...</h1>
     }
 
     return (
