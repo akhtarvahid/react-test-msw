@@ -20,7 +20,9 @@ describe('Listing component tests', () => {
         const heading = screen.getByRole('heading', { name: 'Fetching latest posts...'});
         // 🕗 Wait for the posts request to be finished.
         await waitFor(() => expect(heading).not.toBeInTheDocument());
+
         
-        // expect(localStorage.getItem('names')).toEqual(fakeUserResponse);
+        const getfromLocalStorage = localStorage.getItem('names')?.split(',') || [];
+        expect(getfromLocalStorage[0]).toEqual(fakeUserResponse[0]);
     });
 })
