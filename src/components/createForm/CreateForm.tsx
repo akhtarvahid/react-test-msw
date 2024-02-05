@@ -6,13 +6,11 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import { FormField } from '../../App';
 
-
-
-type CreateFormType = {
-  colorSetter: (values: FormField) => any;
+interface CreateFormType {
+  setFavColors: React.Dispatch<React.SetStateAction<FormField[]>>;
 }
 
-const CreateForm: React.FC<CreateFormType> = ({ colorSetter }) => {
+const CreateForm: React.FC<CreateFormType> = ({ setFavColors }) => {
   const [formValue, setFormValues] = useState<FormField>({
     name: '',
     location: '',
@@ -64,7 +62,7 @@ const CreateForm: React.FC<CreateFormType> = ({ colorSetter }) => {
               </Col>
             </Row>
             <Row>
-              <Button variant="primary" onClick={() => colorSetter(formValue)}>Submit</Button>
+              <Button variant="primary" onClick={() => setFavColors((colors: any) => ([formValue, ...colors]))}>Submit</Button>
             </Row>
           </Col>
         </Col>

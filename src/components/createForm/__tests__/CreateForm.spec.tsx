@@ -6,12 +6,12 @@ describe('CreateForm component tests', () => {
     const submitHandlerMock = jest.fn();
 
     test('sub components: Test1', () => {
-        const view = render(<CreateForm colorSetter={submitHandlerMock} />);
+        const view = render(<CreateForm setFavColors={submitHandlerMock} />);
         expect(view).toMatchSnapshot();
     });
 
     test('TextBox available: Test2', () => {
-        render(<CreateForm colorSetter={submitHandlerMock} />);
+        render(<CreateForm setFavColors={submitHandlerMock} />);
         const nameInputElem = screen.getByRole('textbox', { name: 'Enter name' });
         expect(nameInputElem).toBeInTheDocument();
 
@@ -30,7 +30,7 @@ describe('CreateForm component tests', () => {
     });
 
     test('TextBox Change event: Test3', () => {
-        render(<CreateForm colorSetter={submitHandlerMock} />);
+        render(<CreateForm setFavColors={submitHandlerMock} />);
         const nameInputElem = screen.getByRole('textbox', {
             name: "Enter name"
         });
@@ -39,13 +39,13 @@ describe('CreateForm component tests', () => {
     });
 
     test('TextBox Location change event: Test4', () => {
-        render(<CreateForm colorSetter={submitHandlerMock} />);
+        render(<CreateForm setFavColors={submitHandlerMock} />);
         const nameInputElem = screen.getByRole('combobox');
         fireEvent.change(nameInputElem, { target: { value: 'India' } })
         expect(nameInputElem).toBeInTheDocument();
     });
     test('TextBox Color change event: Test5', () => {
-        render(<CreateForm colorSetter={submitHandlerMock} />);
+        render(<CreateForm setFavColors={submitHandlerMock} />);
         const colorInputElem = screen.getByRole('textbox', {
             name: "Color picker"
         });
@@ -55,7 +55,7 @@ describe('CreateForm component tests', () => {
 
     test('TextBox Submit button: Test6', async () => {
         user.setup();
-        render(<CreateForm colorSetter={submitHandlerMock} />);
+        render(<CreateForm setFavColors={submitHandlerMock} />);
         const submitBtn = screen.getByRole('button', {
             name: "Submit"
         });
