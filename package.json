@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.2.18",
     "bootstrap": "^5.3.2",
     "eslint-plugin-jest-dom": "^5.1.0",
+    "msw": "^2.1.7",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.0",
     "react-dom": "^18.2.0",
@@ -58,10 +59,16 @@
     }
   },
   "devDependencies": {
-    "msw": "^2.1.5",
     "husky": "^8.0.0"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["eslint"]
+    "*.{ts,tsx}": [
+      "eslint"
+    ]
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
