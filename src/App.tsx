@@ -3,6 +3,7 @@ import './App.css';
 import CreateForm from './components/createForm/CreateForm';
 import HeroTitle from './components/heroText/heroTitle';
 import Listing from './components/listing/Listing';
+import UsersList from './components/userLists/UsersList';
 
 export type FormField = {
   name: string,
@@ -17,7 +18,8 @@ function App() {
     <div className="App" data-testid="app">
       <HeroTitle title="Hero Title" />
       <CreateForm setFavColors={setFavColors} />
-      <Listing />
+      {/* <Listing /> */}
+      <UsersList />
       <div data-testid="lists">
         {favColors.map((color, i) =>
           <div key={`${color.name}: ${i}`}>{color.name}</div>
