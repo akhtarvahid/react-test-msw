@@ -2,8 +2,24 @@ import { render, screen } from "@testing-library/react"
 import { HttpResponse, http } from "msw";
 import UserList from "../UserList";
 import { server } from "../../../mocks/server";
+import { mockData } from "../../../utils/mock-data/mock-data";
 
-
+beforeAll(() => {
+    // Start the interception.
+    server.listen()
+  })
+   
+  afterEach(() => {
+    // Remove any handlers you may have added
+    // in individual tests (runtime handlers).
+    server.resetHandlers()
+  })
+   
+  afterAll(() => {
+    // Disable request interception and clean up.
+    server.close()
+  })
+  
 describe('Users component', () => {
 
     it('Users Component data Loading...', async () => {
@@ -58,5 +74,11 @@ describe('Users component', () => {
         )
         const heading = await screen.queryByText('Leanne Graham');
         expect(heading).not.toBeInTheDocument();
+    })
+
+    it('Users List rendering', async () => {
+        render(<UserList />);
+        const lists = await screen.findAllByRole('listitem');
+        expect(lists).toHaveLength(mockData.length);
     })
 })

@@ -16,7 +16,7 @@ const UserList = () => {
             })
     }, [])
 
-    if(isLoading) {
+    if(isLoading && users?.length === 0) {
         return <h1>Loading...</h1>
     }
     console.log(users)

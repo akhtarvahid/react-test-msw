@@ -1,20 +1,18 @@
-import { setupServer } from 'msw/node'
-import { handlers } from './mocks/handlers'
+// import { setupServer } from 'msw/node'
+// import { handlers } from './mocks/handlers'
+  
+// beforeAll(() => {
+//   // Start the interception.
+//   server.listen()
+// })
  
-const server = setupServer(...handlers)
+// afterEach(() => {
+//   // Remove any handlers you may have added
+//   // in individual tests (runtime handlers).
+//   server.resetHandlers()
+// })
  
-beforeAll(() => {
-  // Start the interception.
-  server.listen()
-})
- 
-afterEach(() => {
-  // Remove any handlers you may have added
-  // in individual tests (runtime handlers).
-  server.resetHandlers()
-})
- 
-afterAll(() => {
-  // Disable request interception and clean up.
-  server.close()
-})
+// afterAll(() => {
+//   // Disable request interception and clean up.
+//   server.close()
+// })
