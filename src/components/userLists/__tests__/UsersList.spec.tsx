@@ -1,5 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import UsersList from '../UsersList';
+import { worker } from '../../../browser-integration/mock/browser';
+
+
+
+beforeAll(() => worker.start());
+afterAll(() => worker.stop());
+afterEach(() => worker.resetHandlers());
 
 describe('UsersList component tests', () => {
     

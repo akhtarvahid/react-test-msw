@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 async function enableMocking() {
-  const { worker } = await import('./mock/browser');
+  const { worker } = await import('./browser-integration/mock/browser');
   return worker.start()
 }
 const root = ReactDOM.createRoot(
