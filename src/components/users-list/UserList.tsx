@@ -5,6 +5,7 @@ const UserList = () => {
 
     const [users, setUsers] = useState<any>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         setIsLoading(true);
@@ -14,15 +15,17 @@ const UserList = () => {
                 setUsers(res);
                 setIsLoading(false);
             })
+            .catch(() => setError('Something went wrong!'))
     }, [])
 
-    if(isLoading && users?.length === 0) {
+    if (isLoading && users?.length === 0) {
         return <h1>Loading...</h1>
     }
-    console.log(users)
+
     return (
         <div>
             <h1>Users</h1>
+            {error && <p>{error}</p>}
             {users?.length > 0 ? <ul>
                 {users?.map((product: any) =>
                     <li key={product.id}>{product.name}</li>

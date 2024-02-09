@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react"
+import { render, screen, waitFor } from "@testing-library/react"
 import { HttpResponse, http } from "msw";
 import UserList from "../UserList";
 import { server } from "../../../mocks/server";
@@ -74,6 +74,17 @@ describe('Users component', () => {
         )
         const heading = await screen.queryByText('Leanne Graham');
         expect(heading).not.toBeInTheDocument();
+    })
+
+    it('renders error', async() => {
+        render(<UserList />);
+        server.use(
+            http.get('https://jsonplaceholder.typicode.com/users', () => {
+                return new HttpResponse(null, { status: 500 })
+            })
+        )
+        const error = await screen.queryByText('Something went wrong!');
+        waitFor(() => expect(error).toBeInTheDocument());
     })
 
     it('Users List rendering', async () => {
