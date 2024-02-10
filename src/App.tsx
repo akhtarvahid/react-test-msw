@@ -3,6 +3,7 @@ import './App.css';
 import CreateForm from './components/createForm/CreateForm';
 import HeroTitle from './components/heroText/heroTitle';
 import UserList from './components/users-list/UserList';
+import Todos from './components/todos/Todos';
 
 export type FormField = {
   name: string,
@@ -17,7 +18,8 @@ function App() {
     <div className="App" data-testid="app">
       <HeroTitle title="Hero Title" />
       <CreateForm setFavColors={setFavColors} />
-      <UserList />
+      {/* <UserList /> */}
+      <Todos />
     </div>
   );
 }

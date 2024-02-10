@@ -69,3 +69,24 @@ export const mockData = [
         }
     },
 ]
+export const todosMock = [{
+    "createdAt": "2024-01-26T01:13:49.502Z",
+    "name": "Geoffrey Metz",
+    "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/685.jpg",
+    "email": "email 6",
+    "location": "location 6",
+    "company": "company 6",
+    "isResident": false,
+    "description": "Illo voluptate veritatis rerum pariatur occaecati. Esse est laudantium odit ullam. Quisquam sed quia unde ipsam.",
+    "id": "6"
+}, {
+    "createdAt": "2024-01-26T01:43:15.934Z",
+    "name": "Leigh Schowalter",
+    "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/390.jpg",
+    "email": "email 5",
+    "location": "location 5",
+    "company": "company 5",
+    "isResident": true,
+    "description": "Vel dignissimos cumque deleniti magnam amet. Facilis maxime cupiditate. Reprehenderit magnam suscipit quis ea alias nulla porro.",
+    "id": "5"
+}]
