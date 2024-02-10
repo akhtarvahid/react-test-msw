@@ -1,8 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react"
-import { HttpResponse, http } from "msw";
 import { server } from "../../../mocks/server";
-import { mockData, todosMock } from "../../../utils/mock-data/mock-data";
-import Todos, { TODOS_API_URL } from "../Todos";
+import { todosMock } from "../../../utils/mock-data/mock-data";
+import Todos from "../Todos";
 
 beforeAll(() => {
     // Start the interception.
@@ -40,16 +39,14 @@ describe('Todos component', () => {
         expect(paragraph2).toBeInTheDocument();
     })
 
-    it('users api error', async () => {
-        render(<Todos />);
-        server.use(
-            http.get(TODOS_API_URL, () => {
-                return new HttpResponse(null, { status: 401 })
-            })
-        )
-        const heading = await screen.queryByText('Geoffrey Metz');
-        expect(heading).not.toBeInTheDocument();
-    })
+    it('fetched data and renders Todos ', async () => {
+        await render(<Todos />);
+        const loading = await screen.findByText('loading...');
+        expect(loading).toBeInTheDocument();
+        const listNode = await screen.findByTestId('todos')
+        waitFor(() => expect(loading).not.toBeInTheDocument());
+        expect(listNode.childNodes).toHaveLength(todosMock.length);
+      });
 
     it('Todos List rendering', async () => {
         render(<Todos />);

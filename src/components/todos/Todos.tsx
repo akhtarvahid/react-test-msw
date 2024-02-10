@@ -15,13 +15,14 @@ interface UserTodo {
 
 const Todos = () => {
     const [users, setUsers] = useState<UserTodo[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const getUsersTodos = async () => {
             const response = await fetch(TODOS_API_URL);
             const result = await response.json();
             setUsers(result.slice(0, 5));
+            setIsLoading(false)
         }
         getUsersTodos()
     }, [])
@@ -29,7 +30,7 @@ const Todos = () => {
     return (
         <div>
             <h1>User Todos</h1>
-            <div data-testid="todos">
+            {isLoading ? <div>loading...</div> : <div data-testid="todos">
                 {users
                     .map(user =>
                         <div data-testid="todo-row" key={`${user.id} ${user.name}`} className='todo-row'>
@@ -46,7 +47,7 @@ const Todos = () => {
                             </div>
                         </div>
                     )}
-            </div>
+            </div>}
         </div>
     )
 }
