@@ -15,7 +15,10 @@ const UserList = () => {
                 setUsers(res);
                 setIsLoading(false);
             })
-            .catch(() => setError('Something went wrong!'))
+            .catch(() => {
+                setIsLoading(false);
+                setError('Something went wrong!')
+            })
     }, [])
 
     if (isLoading && users?.length === 0) {
