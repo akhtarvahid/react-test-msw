@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import useSWRMutation from 'swr/mutation'
 
 export const TODOS_API_URL = 'https://65a1879f42ecd7d7f0a6b7ba.mockapi.io/todo';
 
@@ -13,26 +14,27 @@ interface UserTodo {
     id: string
 }
 
+async function getRequest(url: RequestInfo | URL) {
+    return fetch(url, {
+        method: 'GET',
+    }).then(res => res.json())
+}
 const Todos = ({ searchText }: any) => {
-    const [users, setUsers] = useState<UserTodo[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const { data: users, trigger, isMutating } = useSWRMutation(TODOS_API_URL, getRequest)
 
     useEffect(() => {
         const getUsersTodos = async () => {
-            const response = await fetch(TODOS_API_URL);
-            const result = await response.json();
-            setUsers(result);
-            setIsLoading(false)
+            await trigger()
         }
         getUsersTodos()
     }, [])
 
     return (
         <div>
-            {isLoading ? <div>loading...</div> : <div data-testid="todos"
+            {isMutating ? <div>loading...</div> : <div data-testid="todos"
                 style={{ display: 'flex', flexFlow: 'row wrap' }}>
-                {[...users].reverse().filter(user => user.name.toLowerCase().startsWith(searchText?.toLowerCase()))
-                    .map(user =>
+                {users && [...users].reverse().filter(user => user.name.toLowerCase().startsWith(searchText?.toLowerCase()))
+                    .map((user: UserTodo) =>
                         <div style={{ backgroundColor: 'slategrey', margin: 5 }} data-testid="todo-row" key={`${user.id} ${user.name}`} className='todo-row'>
                             <img src={user.avatar} alt='avatar' />
                             <div>
