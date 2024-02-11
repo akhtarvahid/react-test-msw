@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react"
-import { server } from "../../../mocks/server";
-import { todosMock } from "../../../utils/mock-data/mock-data";
+import { server } from "../../../../mocks/server";
+import { todosMock } from "../../../../utils/mock-data/mock-data";
 import Todos from "../Todos";
 
 beforeAll(() => {
@@ -19,16 +19,12 @@ afterAll(() => {
     server.close();
 })
 
+// AAA(Arrange-Act-Assert)
+
 describe('Todos component', () => {
 
-    it('Todos Component title', async () => {
-        render(<Todos />);
-        const loadingText = screen.getByRole('heading', { name: "User Todos" });
-        expect(loadingText).toBeInTheDocument();
-    })
-
     it('users fetched successfully', async () => {
-        render(<Todos />);
+        render(<Todos searchText='' />);
         const heading = await screen.findByText('Geoffrey Metz');
         expect(heading).toBeInTheDocument();
 
@@ -40,7 +36,7 @@ describe('Todos component', () => {
     })
 
     it('fetched data and renders Todos ', async () => {
-        await render(<Todos />);
+        await render(<Todos searchText='' />);
         const loading = await screen.findByText('loading...');
         expect(loading).toBeInTheDocument();
         const listNode = await screen.findByTestId('todos')
@@ -49,7 +45,8 @@ describe('Todos component', () => {
       });
 
     it('Todos List rendering', async () => {
-        render(<Todos />);
+        render(<Todos searchText='' />);
+        expect(screen.getByText('loading...').textContent).toBe('loading...');
         const lists = await screen.findAllByTestId('todo-row');
         expect(lists).toHaveLength(todosMock.length);
     })

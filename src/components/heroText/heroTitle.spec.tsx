@@ -3,11 +3,11 @@ import HeroTitle from './heroTitle';
 
 describe('Hero component tests', () => {
   test('sub components: Test1', () => {
-    render(<HeroTitle title="Hero" />);
+    render(<HeroTitle title="Todo App" />);
     const linkElement = screen.getByRole('heading');
     //log('LOGGER: ', linkElement.textContent);
     expect(linkElement).toBeInTheDocument();
-    expect(linkElement).toHaveTextContent('Hero');
+    expect(linkElement).toHaveTextContent('Todo App');
   });
   test('sub components: Test2', () => {
     render(<HeroTitle />);

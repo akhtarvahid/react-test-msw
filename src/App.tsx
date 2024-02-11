@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import './App.css';
-import CreateForm from './components/createForm/CreateForm';
 import HeroTitle from './components/heroText/heroTitle';
-import UserList from './components/users-list/UserList';
-import Todos from './components/todos/Todos';
+import TodoApp from './components/todo-app';
 
 export type FormField = {
   name: string,
@@ -16,10 +14,8 @@ function App() {
 
   return (
     <div className="App" data-testid="app">
-      <HeroTitle title="Hero Title" />
-      <CreateForm setFavColors={setFavColors} />
-      {/* <UserList /> */}
-      <Todos />
+      <HeroTitle title="Todo App" />
+      <TodoApp />
     </div>
   );
 }

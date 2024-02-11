@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const TODOS_API_URL = 'https://65a1879f42ecd7d7f0a6b7ba.mockapi.io/todo';
 
@@ -13,7 +13,7 @@ interface UserTodo {
     id: string
 }
 
-const Todos = () => {
+const Todos = ({ searchText }: any) => {
     const [users, setUsers] = useState<UserTodo[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -21,7 +21,7 @@ const Todos = () => {
         const getUsersTodos = async () => {
             const response = await fetch(TODOS_API_URL);
             const result = await response.json();
-            setUsers(result.slice(0, 5));
+            setUsers(result);
             setIsLoading(false)
         }
         getUsersTodos()
@@ -29,11 +29,11 @@ const Todos = () => {
 
     return (
         <div>
-            <h1>User Todos</h1>
-            {isLoading ? <div>loading...</div> : <div data-testid="todos">
-                {users
+            {isLoading ? <div>loading...</div> : <div data-testid="todos"
+                style={{ display: 'flex', flexFlow: 'row wrap' }}>
+                {[...users].reverse().filter(user => user.name.toLowerCase().startsWith(searchText?.toLowerCase()))
                     .map(user =>
-                        <div data-testid="todo-row" key={`${user.id} ${user.name}`} className='todo-row'>
+                        <div style={{ backgroundColor: 'slategrey', margin: 5 }} data-testid="todo-row" key={`${user.id} ${user.name}`} className='todo-row'>
                             <img src={user.avatar} alt='avatar' />
                             <div>
                                 <h3>{user.name}</h3>

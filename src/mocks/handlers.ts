@@ -1,6 +1,6 @@
 import { HttpResponse, http } from 'msw';
 import { mockData, todosMock } from '../utils/mock-data/mock-data';
-import { TODOS_API_URL } from '../components/todos/Todos';
+import { TODOS_API_URL } from '../components/todo-app/Todos/Todos';
 
 export const handlers = [
     http.get('https://jsonplaceholder.typicode.com/users', (resolver) => {
