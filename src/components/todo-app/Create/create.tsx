@@ -35,7 +35,6 @@ const Create = () => {
     const { data, trigger: createTodo, isMutating: isCreating } = useSWRMutation(TODOS_API_URL, postRequest)
 
     const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.name);
         setForm((f) => {
             return {
                 ...f,
