@@ -10,10 +10,11 @@ const TodoApp = () => {
     }
     return (
         <>
+            <Create />
+
             <Search value={searchText} onChange={handleChange}>
                 Search:
             </Search>
-            <Create />
             <Todos searchText={searchText} />
         </>
     )
