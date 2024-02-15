@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import useSWRMutation from 'swr/mutation'
 
 export const TODOS_API_URL = 'https://65a1879f42ecd7d7f0a6b7ba.mockapi.io/todo';

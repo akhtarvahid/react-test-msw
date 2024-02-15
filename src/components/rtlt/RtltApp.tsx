@@ -9,7 +9,6 @@ function RtltApp() {
 
   async function handleFetch(event: any) {
     let result;
-
     try {
       result = await axios.get(`${URL}?query=React`);
 

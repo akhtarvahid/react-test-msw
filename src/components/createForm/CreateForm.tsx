@@ -4,8 +4,12 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import { FormField } from '../../App';
 
+type FormField = {
+  name: string,
+  location: string,
+  color: string
+}
 interface CreateFormType {
   setFavColors: React.Dispatch<React.SetStateAction<FormField[]>>;
 }
