@@ -1,14 +1,10 @@
 import './App.css';
-import HeroTitle from './components/heroText/heroTitle';
-import TodoApp from './components/todo-app';
-import RtltApp from './components/rtlt/RtltApp';
+import Library from './components/library-management/index';
 
 function App() {
   return (
     <div className="App" data-testid="app">
-      <HeroTitle title="Todo App" />
-      <TodoApp />
-      <RtltApp />
+      <Library />
     </div>
   );
 }

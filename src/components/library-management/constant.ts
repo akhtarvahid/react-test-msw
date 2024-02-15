@@ -1,0 +1,1 @@
+export const LIBRARY_API = 'https://65a1879f42ecd7d7f0a6b7ba.mockapi.io/library';
