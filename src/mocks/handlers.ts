@@ -1,4 +1,4 @@
-import { DefaultBodyType, DefaultRequestMultipartBody, HttpResponse, http } from 'msw';
+import { DefaultBodyType, DefaultRequestMultipartBody, HttpResponse, delay, http } from 'msw';
 import { libraryMoock, mockData, todosMock } from '../utils/mock-data/mock-data';
 import { TODOS_API_URL } from '../components/todo-app/Todos/Todos';
 import { LIBRARY_API } from '../components/library-management/constant';
@@ -15,6 +15,9 @@ export const handlers = [
         return HttpResponse.json(libraryMoock)
     }),
     http.post(LIBRARY_API, async ({ request }) => {
-        return HttpResponse.json({}, { status: 201 })
+        const newPost = await request.json();
+        return HttpResponse.json({
+            title: 'Akhtar'
+        }, { status: 200 } )
     })
 ]

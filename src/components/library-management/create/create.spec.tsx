@@ -1,10 +1,9 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import Create from './create';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import { server } from '../../../mocks/server';
 
-jest.mock('axios');
 beforeAll(() => {
     // Start the interception.
     server.listen()
@@ -21,7 +20,7 @@ afterAll(() => {
     server.close();
 })
 describe('Create Component', () => {
-
+    
     it('should have 3 input field', () => {
         render(<Create />);
         const inputs = screen.getAllByRole('textbox');
@@ -69,39 +68,23 @@ describe('Create Component', () => {
 
         expect(price).toHaveAttribute('value', '$1')
     });
-    it('should not trigger submit button if fields are empty', () => {
+
+    it('should trigger submit button if fields are filled', async () => {
+        
         render(<Create />);
         const submitBtn = screen.getByRole('button', { name: 'Submit' });
         expect(submitBtn).toBeInTheDocument();
         const title = screen.getByRole('textbox', { name: 'Title' });
-        expect(title).toHaveAttribute('value', '');
-        const msg = screen.getByTestId('creating-msg');
-
-
-        // state update function should be inside act
+        
         act(() => {
             userEvent.click(submitBtn)
         })
 
-        expect(msg).not.toBe('successfully created')
-        expect(msg.textContent).toBe('')
-    });
-    it('submit button', async () => {
-        render(<Create />);
-        const submitBtn = screen.getByRole('button', { name: 'Submit' });
-        expect(submitBtn).toBeInTheDocument();
-        const msg = screen.getByTestId('creating-msg');
-
-
-        // state update function should be inside act
-        act(() => {
-            userEvent.click(submitBtn)
-        })
-
-        await waitFor(() => expect(msg.textContent).toBe('successfully created'))
+        expect(title).toHaveValue('')
+        await waitFor(() => expect(screen.getByText('Fields are empty')).toBeInTheDocument());
     });
     it('submit new book in library api success request', async () => {
-        await render(<Create />);
+        render(<Create />);
         let title = screen.getByRole('textbox', { name: 'Title' })
         let author = screen.getByRole('textbox', { name: 'Author' })
         let price = screen.getByRole('textbox', { name: 'Price' })
@@ -110,16 +93,18 @@ describe('Create Component', () => {
 
         await act(async () => {
             await userEvent.type(title,  'NodeJs')
-            await userEvent.type(author,  'Sun micro system')
+            await userEvent.type(author,  'Xyz')
             await userEvent.type(price,  '$1.2')
+        })
+        act(() => {
             userEvent.click(screen.getByRole('button', { name: 'Submit' }));
         })
-        
 
         // Wait for the async operation to complete
-        await waitFor(() => {
+        waitFor(() => {
             // Assert that the component displays the mocked success message
-            expect(screen.getByText('Created')).toBeInTheDocument();
+            expect(screen.getByText('Loading...')).toBeInTheDocument();
         });
+        waitFor(() => expect(screen.getByText('Successfully created')).toBeInTheDocument());
     });
 })
