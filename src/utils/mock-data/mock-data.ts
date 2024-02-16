@@ -90,3 +90,12 @@ export const todosMock = [{
     "description": "Vel dignissimos cumque deleniti magnam amet. Facilis maxime cupiditate. Reprehenderit magnam suscipit quis ea alias nulla porro.",
     "id": "5"
 }]
+
+export const libraryMoock = [{
+    createdAt: "2024-02-15T04:36:36.147Z",
+    title: "Enrique Stokes",
+    image: "https://loremflickr.com/640/480/nature",
+    author: "author 1",
+    price: "price 1",
+    id: "1"
+}]
