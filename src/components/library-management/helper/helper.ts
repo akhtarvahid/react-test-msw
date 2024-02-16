@@ -10,7 +10,6 @@ export const createBookLibrary = async (form: Book) => {
         try {
             const response = await axios.post(LIBRARY_API, { ...form });
             result = await response;
-            console.log(result);
         } catch (e) {
         }
     }

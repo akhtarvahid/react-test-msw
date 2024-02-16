@@ -16,9 +16,8 @@ const initialState = {
 }
 const Create: React.FC = () => {
   const [form, setForm] = useState<Book>(initialState);
-  const [createdUser, setCreatedUser] = useState<any>({});
   const [success, setSuccess] = useState(false);
-  const [responseMessage, setResponseMessage] = useState('');
+  const [responseMessage, setResponseMessage] = useState<string | undefined>('');
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((f) => {
@@ -28,13 +27,13 @@ const Create: React.FC = () => {
       }
     })
   }
-  const submitHandler = async (e: { preventDefault: () => void; }) => {
+  const submitHandler = async (e: { preventDefault: () => void; }) => { 
     e.preventDefault();
     const res = await createBookLibrary(form);
-    setResponseMessage('Mocked success message from MSW');
-    setCreatedUser(res);
+    setResponseMessage('Created');
     setSuccess(true);
-  }
+   }
+  
 
   return (
     <Form>
@@ -51,12 +50,11 @@ const Create: React.FC = () => {
         <Form.Label>Price</Form.Label>
         <Form.Control type="text" placeholder="Price" name="price" value={form.price || ''} onChange={handleFormChange} />
       </Form.Group>
-      <Button variant="primary" type="submit"
+      <Button variant="primary" type="submit" name='Submit'
         onClick={submitHandler}>
         Submit
       </Button>
       <span data-testid="creating-msg">{success ? 'successfully created' : ''}</span>
-      <h1 data-testid="create-new">{createdUser?.title}</h1>
       <p>{responseMessage}</p>
     </Form>
   )

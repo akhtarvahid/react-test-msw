@@ -15,10 +15,6 @@ export const handlers = [
         return HttpResponse.json(libraryMoock)
     }),
     http.post(LIBRARY_API, async ({ request }) => {
-        return HttpResponse.json({
-
-           message: 'Mocked success message from MSW'
-
-        }, { status: 201 })
+        return HttpResponse.json({}, { status: 201 })
     })
 ]

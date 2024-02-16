@@ -21,6 +21,7 @@ afterAll(() => {
     server.close();
 })
 describe('Create Component', () => {
+
     it('should have 3 input field', () => {
         render(<Create />);
         const inputs = screen.getAllByRole('textbox');
@@ -85,7 +86,7 @@ describe('Create Component', () => {
         expect(msg).not.toBe('successfully created')
         expect(msg.textContent).toBe('')
     });
-    it('submit button', () => {
+    it('submit button', async () => {
         render(<Create />);
         const submitBtn = screen.getByRole('button', { name: 'Submit' });
         expect(submitBtn).toBeInTheDocument();
@@ -97,17 +98,28 @@ describe('Create Component', () => {
             userEvent.click(submitBtn)
         })
 
-        waitFor(() => expect(msg).toBe('successfully created'))
+        await waitFor(() => expect(msg.textContent).toBe('successfully created'))
     });
     it('submit new book in library api success request', async () => {
-        render(<Create />);
-        act(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+        await render(<Create />);
+        let title = screen.getByRole('textbox', { name: 'Title' })
+        let author = screen.getByRole('textbox', { name: 'Author' })
+        let price = screen.getByRole('textbox', { name: 'Price' })
+        
+
+
+        await act(async () => {
+            await userEvent.type(title,  'NodeJs')
+            await userEvent.type(author,  'Sun micro system')
+            await userEvent.type(price,  '$1.2')
+            userEvent.click(screen.getByRole('button', { name: 'Submit' }));
         })
+        
+
         // Wait for the async operation to complete
         await waitFor(() => {
             // Assert that the component displays the mocked success message
-            expect(screen.getByText('Mocked success message from MSW')).toBeInTheDocument();
+            expect(screen.getByText('Created')).toBeInTheDocument();
         });
     });
 })
