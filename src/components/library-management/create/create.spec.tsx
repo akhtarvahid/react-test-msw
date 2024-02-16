@@ -2,10 +2,24 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Create from './create';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
-import axios from 'axios';
+import { server } from '../../../mocks/server';
 
 jest.mock('axios');
+beforeAll(() => {
+    // Start the interception.
+    server.listen()
+})
 
+afterEach(() => {
+    // Remove any handlers you may have added
+    // in individual tests (runtime handlers).
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    // Disable request interception and clean up.
+    server.close();
+})
 describe('Create Component', () => {
     it('should have 3 input field', () => {
         render(<Create />);
@@ -83,22 +97,17 @@ describe('Create Component', () => {
             userEvent.click(submitBtn)
         })
 
-        //expect(submitBtn).toHaveBeenCalledTimes(1);
         waitFor(() => expect(msg).toBe('successfully created'))
     });
     it('submit new book in library api success request', async () => {
-        const booksMockData = [
-            { id: '3', title: 'Lewis Price' },
-            { id: '4', title: 'Julia Tromp V' },
-        ];
-        (axios.get as jest.Mock).mockImplementationOnce(() =>
-            Promise.resolve({ books:  booksMockData})
-        );
         render(<Create />);
         act(() => {
-            userEvent.click(screen.getByRole('button', { name: 'Submit' }));
-
+            fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
         })
-        waitFor(() => expect(screen.getByTestId('creating-msg')).toBe('successfully created'));
+        // Wait for the async operation to complete
+        await waitFor(() => {
+            // Assert that the component displays the mocked success message
+            expect(screen.getByText('Mocked success message from MSW')).toBeInTheDocument();
+        });
     });
 })
