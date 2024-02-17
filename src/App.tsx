@@ -1,10 +1,10 @@
 import './App.css';
-import Library from './components/library-management/index';
+import CrudWithSWR from './components/crud-swr';
 
 function App() {
   return (
     <div className="App" data-testid="app">
-      <Library />
+       <CrudWithSWR />
     </div>
   );
 }
