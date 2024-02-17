@@ -12,10 +12,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-   <SWRConfig value={swrConfig}>
+    <SWRConfig value={swrConfig}>
       <App />
-   </SWRConfig>
-    
+    </SWRConfig>
   </React.StrictMode>
 );
 
