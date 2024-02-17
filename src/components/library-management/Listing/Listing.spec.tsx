@@ -23,7 +23,8 @@ afterAll(() => {
 describe('Library Listing component', () => {
 
     it('users fetched successfully', async () => {
-        render(<Listing />);
+        const mockData = [{ id: 1, title: 'Enrique Stokes'}, { id: 2, title: 'MERN Stack'}]
+        render(<Listing books={mockData} />);
         const heading = await screen.findByText('Enrique Stokes');
         expect(heading).toBeInTheDocument();
     })

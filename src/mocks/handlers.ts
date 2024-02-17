@@ -16,8 +16,10 @@ export const handlers = [
     }),
     http.post(LIBRARY_API, async ({ request }) => {
         const newPost = await request.json();
+        console.log('post REQUEST:::::', newPost);
+
         return HttpResponse.json({
-            title: 'Akhtar'
-        }, { status: 200 } )
+            newPost
+        }, { status: 200 })
     })
 ]

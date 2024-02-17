@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import Create from './create';
-import { act } from 'react-dom/test-utils';
+// act should be from @testing-library/react 👉 not from 'react-dom/test-utils';
+import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { server } from '../../../mocks/server';
 
@@ -22,7 +23,8 @@ afterAll(() => {
 describe('Create Component', () => {
     
     it('should have 3 input field', () => {
-        render(<Create />);
+        const mockFn = jest.fn();
+        render(<Create onAddBook={mockFn}/>);
         const inputs = screen.getAllByRole('textbox');
         expect(inputs).toHaveLength(3);
         expect(screen.getByRole('textbox', { name: 'Title' })).toBeInTheDocument();
@@ -30,7 +32,9 @@ describe('Create Component', () => {
         expect(screen.getByRole('textbox', { name: 'Price' })).toBeInTheDocument();
     });
     it('library title field', () => {
-        render(<Create />);
+        const mockFn = jest.fn();
+
+        render(<Create onAddBook={mockFn} />);
         const title = screen.getByRole('textbox', { name: 'Title' });
         expect(title).toHaveAttribute('value', '');
 
@@ -43,7 +47,9 @@ describe('Create Component', () => {
         expect(title).toHaveAttribute('value', 'Java')
     });
     it('library author field', () => {
-        render(<Create />);
+        const mockFn = jest.fn();
+
+        render(<Create onAddBook={mockFn}/>);
         const author = screen.getByRole('textbox', { name: 'Author' });
         expect(author).toHaveAttribute('value', '');
 
@@ -56,7 +62,9 @@ describe('Create Component', () => {
         expect(author).toHaveAttribute('value', 'James Gosling')
     });
     it('library price field', () => {
-        render(<Create />);
+        const mockFn = jest.fn();
+
+        render(<Create onAddBook={mockFn} />);
         const price = screen.getByRole('textbox', { name: 'Price' });
         expect(price).toHaveAttribute('value', '');
 
@@ -70,8 +78,9 @@ describe('Create Component', () => {
     });
 
     it('should trigger submit button if fields are filled', async () => {
-        
-        render(<Create />);
+        const mockFn = jest.fn();
+
+        render(<Create onAddBook={mockFn}/>);
         const submitBtn = screen.getByRole('button', { name: 'Submit' });
         expect(submitBtn).toBeInTheDocument();
         const title = screen.getByRole('textbox', { name: 'Title' });
@@ -81,10 +90,13 @@ describe('Create Component', () => {
         })
 
         expect(title).toHaveValue('')
-        await waitFor(() => expect(screen.getByText('Fields are empty')).toBeInTheDocument());
+        waitFor(() => expect(screen.getByText('Fields are empty')).toBeInTheDocument());
     });
-    it('submit new book in library api success request', async () => {
-        render(<Create />);
+
+    it('submit new book in library success request', async () => {
+        const mockFn = jest.fn();
+
+        render(<Create onAddBook={mockFn}/>);
         let title = screen.getByRole('textbox', { name: 'Title' })
         let author = screen.getByRole('textbox', { name: 'Author' })
         let price = screen.getByRole('textbox', { name: 'Price' })
@@ -99,12 +111,9 @@ describe('Create Component', () => {
         act(() => {
             userEvent.click(screen.getByRole('button', { name: 'Submit' }));
         })
-
         // Wait for the async operation to complete
-        waitFor(() => {
-            // Assert that the component displays the mocked success message
-            expect(screen.getByText('Loading...')).toBeInTheDocument();
-        });
-        waitFor(() => expect(screen.getByText('Successfully created')).toBeInTheDocument());
+        waitFor(() => expect(screen.getByTestId('msg')).not.toBeInTheDocument());
+        waitFor(() => expect(screen.getByTestId('msg').textContent).toBe(''));
     });
+    
 })

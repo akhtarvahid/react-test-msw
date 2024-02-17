@@ -1,12 +1,14 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useEffect, useState } from "react";
-import { createBookLibrary } from "../helper/helper";
+import { useState } from "react";
 
 export interface Book {
   title: string;
   author: string;
   price: string;
+}
+type CreateProps = {
+  onAddBook: any
 }
 
 const initialState = {
@@ -14,18 +16,9 @@ const initialState = {
   author: "",
   price: "",
 };
-const Create: React.FC = () => {
+const Create: React.FC<CreateProps> = ({ onAddBook }) => {
   const [form, setForm] = useState<Book>(initialState);
   const [responseMessage, setResponseMessage] = useState<string | undefined>('');
-  const [isReadyToPost, setIsReadyToPost] = useState(false);
-
-  useEffect(() => {
-    if (isReadyToPost) {
-      createBookLibrary(form);
-      setIsReadyToPost(false);
-      setResponseMessage('successfully created')
-    }
-  }, [isReadyToPost]);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((f) => {
@@ -35,10 +28,10 @@ const Create: React.FC = () => {
       };
     });
   };
-  const submitHandler = async (e: { preventDefault: () => void }) => {
+  const submitHandler = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (form.title) {
-      setIsReadyToPost(true);
+    if(form.title) {
+      onAddBook(form);
     } else {
       setResponseMessage('Fields are empty')
     }
@@ -46,7 +39,6 @@ const Create: React.FC = () => {
 
   return (
     <>
-    {isReadyToPost && <h1 style={{ color: "green" }}>Loading...</h1>}
     <Form>
       <Form.Group className="mb-3" controlId="title">
         <Form.Label>Title</Form.Label>
@@ -87,7 +79,7 @@ const Create: React.FC = () => {
       >
         Submit
       </Button>
-      <p>{responseMessage}</p>
+      <p data-testid="msg">{responseMessage ? responseMessage : ''}</p>
     </Form>
     </>
   );
