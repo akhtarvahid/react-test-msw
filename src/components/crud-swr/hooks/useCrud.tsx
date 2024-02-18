@@ -10,8 +10,8 @@ interface PutRequestArgs {
 }
 
 // Delete book
-async function deleteRequest(url: string, { arg }: { arg: PutRequestArgs }) {
-  return fetch(`${url}/${arg.queryParams.id}`, {
+async function deleteRequest(url: string, { arg }: { arg: string }) {
+  return fetch(`${url}/${arg}`, {
     method: "DELETE",
   }).then((res) => res.json());
 }
@@ -65,14 +65,14 @@ export const usePostBook = () => {
     data: book,
     trigger: addBookToStore,
     isMutating: isCreating,
-    error: createError,
+    error: createError
   } = useSWRMutation(LIBRARY_API, postRequest);
 
   return {
     book,
     addBookToStore,
     isCreating,
-    createError,
+    createError
   };
 };
 

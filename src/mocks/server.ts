@@ -3,6 +3,7 @@ import { handlers } from './handlers'
  
 export const server = setupServer(...handlers);
 
-// server.events.on('request:start', ({ request }) => {
-//     console.log('MSW intercepted:', request.method, request.url)
-// })
+server.events.on('request:start', ({ request }) => {
+    console.log('MSW intercepted:', request.method, request.url)
+})
+

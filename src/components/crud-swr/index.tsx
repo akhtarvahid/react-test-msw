@@ -1,75 +1,67 @@
-import { useEffect, useMemo, useState } from "react";
-import { useDeleteBook, useGetBooks, usePostBook, useUpdateBook } from "./hooks/useCrud";
+import { useMemo, useState } from "react";
+import { useDeleteBook, usePostBook, useUpdateBook } from "./hooks/useCrud";
 import BookList from "./BookList";
 import AddBook from "./AddBook";
 import { Book, BookResponse } from "../../types/common-types";
 import UpdateBook from "./UpdateBook";
+import useSWR, { mutate } from "swr";
+import { LIBRARY_API } from "../library-management/constant";
 
 const CrudWithSWR = () => {
-    const [selected, setSelected] = useState<BookResponse | null>(null);
-    const { books, getStoreBooks, isGetting, getError } = useGetBooks();
-    const { book, addBookToStore, isCreating, createError } = usePostBook();
-    const { updateBookToStore, isUpdating, updateError } = useUpdateBook();
-    const { deleteBookFromStore, isDeleting, deleteError, } = useDeleteBook();
+  const [selected, setSelected] = useState<BookResponse | null>(null);
+  const { data: books } = useSWR(LIBRARY_API);
+  const { addBookToStore, createError } = usePostBook();
+  const { updateBookToStore, updateError } = useUpdateBook();
+  const { deleteBookFromStore, deleteError } = useDeleteBook();
 
+  const booksFromStore = useMemo(() => {
+    return books || [];
+  }, [books]);
 
-    useEffect(() => {
-        getStoreBooks();
-    }, 
-    [   getStoreBooks,
-        isCreating, 
-        isUpdating, 
-        isDeleting
-    ])
+  const handleAddBook = async (book: Book) => {
+    try {
+      mutate(LIBRARY_API, [...booksFromStore, book], false);
+      await addBookToStore(book);
+    } catch (err) {}
+  };
+  const handleUpateBook = async (book: BookResponse) => {
+    const modifiedBooks = booksFromStore.map((b: BookResponse) =>
+      b.id === book.id ? book : b
+    );
+    try {
+      mutate(LIBRARY_API, [...modifiedBooks], false);
+      await updateBookToStore({
+        requestBody: book,
+        queryParams: { id: book.id },
+      });
+    } catch (err) {}
+  };
+  const handleDeleteBook = async (id: string) => {
+    const filtered = booksFromStore.filter((b: BookResponse) => b.id !== id);
+    try {
+      mutate(LIBRARY_API, [...filtered], false);
+      await deleteBookFromStore(id);
+    } catch (err) {}
+  };
 
-    const booksFromStore = useMemo(() => {
-        return books &&([...books].reverse() || [])
-    }, [books])
+  if (createError || updateError || deleteError) {
+    return <h1>Something happened wrong!</h1>;
+  }
 
-    const handleAddBook = async (book: Book) => {
-        try {
-          await addBookToStore(book);
-        } catch (err) {
-
-        }
-    }
-    const handleUpateBook = async (book: BookResponse) => {
-        try {
-            await updateBookToStore({
-                requestBody: book,
-                queryParams: { id: book.id }
-            });
-        } catch (err) {
-
-        }
-    }
-    const handleDeleteBook = async (id: string) => {
-        try {
-            await deleteBookFromStore({
-                requestBody: book,
-                queryParams: { id: id }
-            });
-        } catch (err) {
-
-        }
-    }
-
-    const isLoading = isGetting || isUpdating || isCreating || isDeleting;
-
-    if (isLoading) {
-        return <h1>Loading...</h1>
-    }
-    if (getError || createError || updateError || deleteError) {
-        return <h1>Something happened wrong!</h1>
-    }
-
-    return (
-        <div>
-            <h1>Book Store</h1>
-            {!selected ? <AddBook onAddBook={handleAddBook} /> :
-                <UpdateBook onUpdateBook={handleUpateBook} selected={selected} />}
-            <BookList books={booksFromStore} setSelected={setSelected} handleDeleteBook={handleDeleteBook} />
-        </div>
-    )
-}
+  return (
+    <div>
+      <h1>Book Store</h1>
+      {!selected ? (
+        <AddBook onAddBook={handleAddBook} />
+      ) : (
+        <UpdateBook onUpdateBook={handleUpateBook} selected={selected} />
+      )}
+      <BookList
+        books={[...booksFromStore].reverse()}
+        setSelected={setSelected}
+        handleDeleteBook={handleDeleteBook}
+      />
+    </div>
+  );
+};
 export default CrudWithSWR;
