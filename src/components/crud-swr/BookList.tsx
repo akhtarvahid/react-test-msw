@@ -17,8 +17,8 @@ const BookList: React.FC<{
                     <ListGroup.Item key={book.id}>
                         <Card.Title>{book.title}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted">{book.author}</Card.Subtitle>
-                        <h5 onClick={() => setSelected(book)}>
-                            <Badge bg="secondary">Edit</Badge>
+                        <h5>
+                            <Badge bg="secondary" onClick={() => setSelected(book)}>Edit</Badge>
                             <Badge bg="secondary" onClick={() => handleDeleteBook(book.id)}>Delete</Badge>
                         </h5>
                     </ListGroup.Item>

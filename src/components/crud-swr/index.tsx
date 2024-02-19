@@ -9,7 +9,7 @@ import { LIBRARY_API } from "../library-management/constant";
 
 const CrudWithSWR = () => {
   const [selected, setSelected] = useState<BookResponse | null>(null);
-  const { data: books } = useSWR(LIBRARY_API);
+  const { data: books, isLoading } = useSWR(LIBRARY_API);
   const { addBookToStore, createError } = usePostBook();
   const { updateBookToStore, updateError } = useUpdateBook();
   const { deleteBookFromStore, deleteError } = useDeleteBook();
@@ -35,6 +35,8 @@ const CrudWithSWR = () => {
         queryParams: { id: book.id },
       });
     } catch (err) {}
+
+    setSelected(null);
   };
   const handleDeleteBook = async (id: string) => {
     const filtered = booksFromStore.filter((b: BookResponse) => b.id !== id);
@@ -56,11 +58,15 @@ const CrudWithSWR = () => {
       ) : (
         <UpdateBook onUpdateBook={handleUpateBook} selected={selected} />
       )}
-      <BookList
-        books={[...booksFromStore].reverse()}
-        setSelected={setSelected}
-        handleDeleteBook={handleDeleteBook}
-      />
+      {isLoading ? (
+        <h1>Loading...</h1>
+      ) : (
+        <BookList
+          books={[...booksFromStore].reverse()}
+          setSelected={setSelected}
+          handleDeleteBook={handleDeleteBook}
+        />
+      )}
     </div>
   );
 };
