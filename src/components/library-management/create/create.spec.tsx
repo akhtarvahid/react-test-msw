@@ -1,119 +1,148 @@
-import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
-import Create from './create';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
+import Create from "./create";
 // act should be from @testing-library/react 👉 not from 'react-dom/test-utils';
-import { act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { server } from '../../../mocks/server';
+import { act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { server } from "../../../mocks/server";
+import { HttpResponse, http } from "msw";
+import { LIBRARY_API } from "../constant";
+import { isFieldsEmpty } from "../helper/helper";
 
 beforeAll(() => {
-    // Start the interception.
-    server.listen()
-})
+  // Start the interception.
+  server.listen();
+});
 
 afterEach(() => {
-    // Remove any handlers you may have added
-    // in individual tests (runtime handlers).
-    server.resetHandlers()
-})
+  // Remove any handlers you may have added
+  // in individual tests (runtime handlers).
+  server.resetHandlers();
+});
 
 afterAll(() => {
-    // Disable request interception and clean up.
-    server.close();
-})
-describe('Create Component', () => {
-    
-    it('should have 3 input field', () => {
-        const mockFn = jest.fn();
-        render(<Create onAddBook={mockFn}/>);
-        const inputs = screen.getAllByRole('textbox');
-        expect(inputs).toHaveLength(3);
-        expect(screen.getByRole('textbox', { name: 'Title' })).toBeInTheDocument();
-        expect(screen.getByRole('textbox', { name: 'Author' })).toBeInTheDocument();
-        expect(screen.getByRole('textbox', { name: 'Price' })).toBeInTheDocument();
-    });
-    it('library title field', () => {
-        const mockFn = jest.fn();
+  // Disable request interception and clean up.
+  server.close();
+});
+describe("Create Component", () => {
+  it("should have 3 input field", () => {
+    const mockFn = jest.fn();
+    render(<Create onAddBook={mockFn} />);
+    const inputs = screen.getAllByRole("textbox");
+    expect(inputs).toHaveLength(3);
+    expect(screen.getByRole("textbox", { name: "Title" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Author" })).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Price" })).toBeInTheDocument();
+  });
+  it("library title field", () => {
+    const mockFn = jest.fn();
 
-        render(<Create onAddBook={mockFn} />);
-        const title = screen.getByRole('textbox', { name: 'Title' });
-        expect(title).toHaveAttribute('value', '');
+    render(<Create onAddBook={mockFn} />);
+    const title = screen.getByRole("textbox", { name: "Title" });
+    expect(title).toHaveAttribute("value", "");
 
-
-        // state update function should be inside act
-        act(() => {
-            fireEvent.change(title, { target: { value: 'Java' } })
-        })
-
-        expect(title).toHaveAttribute('value', 'Java')
-    });
-    it('library author field', () => {
-        const mockFn = jest.fn();
-
-        render(<Create onAddBook={mockFn}/>);
-        const author = screen.getByRole('textbox', { name: 'Author' });
-        expect(author).toHaveAttribute('value', '');
-
-
-        // state update function should be inside act
-        act(() => {
-            fireEvent.change(author, { target: { value: 'James Gosling' } })
-        })
-
-        expect(author).toHaveAttribute('value', 'James Gosling')
-    });
-    it('library price field', () => {
-        const mockFn = jest.fn();
-
-        render(<Create onAddBook={mockFn} />);
-        const price = screen.getByRole('textbox', { name: 'Price' });
-        expect(price).toHaveAttribute('value', '');
-
-
-        // state update function should be inside act
-        act(() => {
-            fireEvent.change(price, { target: { value: '$1' } })
-        })
-
-        expect(price).toHaveAttribute('value', '$1')
+    // state update function should be inside act
+    act(() => {
+      fireEvent.change(title, { target: { value: "Java" } });
     });
 
-    it('should trigger submit button if fields are filled', async () => {
-        const mockFn = jest.fn();
+    expect(title).toHaveAttribute("value", "Java");
+  });
+  it("library author field", () => {
+    const mockFn = jest.fn();
 
-        render(<Create onAddBook={mockFn}/>);
-        const submitBtn = screen.getByRole('button', { name: 'Submit' });
-        expect(submitBtn).toBeInTheDocument();
-        const title = screen.getByRole('textbox', { name: 'Title' });
-        
-        act(() => {
-            userEvent.click(submitBtn)
-        })
+    render(<Create onAddBook={mockFn} />);
+    const author = screen.getByRole("textbox", { name: "Author" });
+    expect(author).toHaveAttribute("value", "");
 
-        expect(title).toHaveValue('')
-        waitFor(() => expect(screen.getByText('Fields are empty')).toBeInTheDocument());
+    // state update function should be inside act
+    act(() => {
+      fireEvent.change(author, { target: { value: "James Gosling" } });
     });
 
-    it('submit new book in library success request', async () => {
-        const mockFn = jest.fn();
+    expect(author).toHaveAttribute("value", "James Gosling");
+  });
+  it("library price field", () => {
+    const mockFn = jest.fn();
 
-        render(<Create onAddBook={mockFn}/>);
-        let title = screen.getByRole('textbox', { name: 'Title' })
-        let author = screen.getByRole('textbox', { name: 'Author' })
-        let price = screen.getByRole('textbox', { name: 'Price' })
-        
+    render(<Create onAddBook={mockFn} />);
+    const price = screen.getByRole("textbox", { name: "Price" });
+    expect(price).toHaveAttribute("value", "");
 
-
-        await act(async () => {
-            await userEvent.type(title,  'NodeJs')
-            await userEvent.type(author,  'Xyz')
-            await userEvent.type(price,  '$1.2')
-        })
-        act(() => {
-            userEvent.click(screen.getByRole('button', { name: 'Submit' }));
-        })
-        // Wait for the async operation to complete
-        waitFor(() => expect(screen.getByTestId('msg')).not.toBeInTheDocument());
-        waitFor(() => expect(screen.getByTestId('msg').textContent).toBe(''));
+    // state update function should be inside act
+    act(() => {
+      fireEvent.change(price, { target: { value: "$1" } });
     });
-    
-})
+
+    expect(price).toHaveAttribute("value", "$1");
+  });
+
+  it("submit new book in library successfully", async () => {
+    const mockFn = jest.fn();
+
+    render(<Create onAddBook={mockFn} />);
+    let title = screen.getByRole("textbox", { name: "Title" });
+    let author = screen.getByRole("textbox", { name: "Author" });
+    let price = screen.getByRole("textbox", { name: "Price" });
+
+    await act(async () => {
+      await userEvent.type(title, "NodeJs");
+      await userEvent.type(author, "Xyz");
+      await userEvent.type(price, "$1.2");
+    });
+    await act(async () => {
+      await userEvent.click(screen.getByRole("button", { name: "Submit" }));
+    });
+    // Wait for the async operation to complete
+    waitFor(() =>
+      expect(screen.getByText("Successfully created")).toBeInTheDocument()
+    );
+  });
+  it("submit new book in library failure", async () => {
+    server.use(
+      http.post(LIBRARY_API, () => {
+        return HttpResponse.error();
+      })
+    );
+    const mockFn = jest.fn();
+
+    render(<Create onAddBook={mockFn} />);
+    let title = screen.getByRole("textbox", { name: "Title" });
+    let author = screen.getByRole("textbox", { name: "Author" });
+    let price = screen.getByRole("textbox", { name: "Price" });
+
+    await act(async () => {
+      await userEvent.type(title, "NodeJs");
+      await userEvent.type(author, "Xyz");
+      await userEvent.type(price, "$1.2");
+    });
+    await act(async () => {
+      await userEvent.click(screen.getByRole("button", { name: "Submit" }));
+    });
+    //waitFor(()=> screen.debug());
+    // Wait for the async operation to complete
+    expect(screen.getByText("Something went wrong!")).toBeInTheDocument();
+  });
+
+  it("isFieldsEmpty function returns true if fields are empty", () => {
+    const inputFields = {
+      title: "",
+      author: "",
+      price: "",
+    };
+    expect(isFieldsEmpty(inputFields)).toBeTruthy();
+  });
+  it("isFieldsEmpty function returns false if fields arenot empty", () => {
+    const inputFields = {
+      title: "MERN",
+      author: "stephen",
+      price: "$3",
+    };
+    expect(isFieldsEmpty(inputFields)).toBeFalsy();
+  });
+});

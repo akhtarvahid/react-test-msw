@@ -1,5 +1,4 @@
 import ListGroup from "react-bootstrap/ListGroup";
-import Card from "react-bootstrap/Card";
 import { BookResponse } from "../../types/common-types";
 import Badge from "react-bootstrap/Badge";
 
@@ -18,7 +17,7 @@ const BookList: React.FC<{
             key={book.id}
             as="li"
             className="d-flex justify-content-between align-items-start"
-            variant={i%2 == 0 ? "dark": ""}
+            variant={i%2 === 0 ? "dark": ""}
           >
             <div className="ms-2 me-auto">
               <div className="fw-bold">{book.title}</div>

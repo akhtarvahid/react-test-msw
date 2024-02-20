@@ -1,12 +1,12 @@
 import './App.css';
-import CrudWithSWR from './components/crud-swr';
+import Library from './components/library-management';
 import NavBar from './components/navbar/NavBar';
 
 function App() {
   return (
     <div className="App" data-testid="app">
-      <NavBar title="Todo with SWR" />
-       <CrudWithSWR />
+       <NavBar title="Library" />
+       <Library />
     </div>
   );
 }

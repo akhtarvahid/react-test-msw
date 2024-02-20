@@ -1,25 +1,24 @@
-import { DefaultBodyType, DefaultRequestMultipartBody, HttpResponse, delay, http } from 'msw';
+import { HttpResponse, http } from 'msw';
 import { libraryMoock, mockData, todosMock } from '../utils/mock-data/mock-data';
 import { TODOS_API_URL } from '../components/todo-app/Todos/Todos';
 import { LIBRARY_API } from '../components/library-management/constant';
-const allPosts = new Map()
 
 export const handlers = [
-    http.get('https://jsonplaceholder.typicode.com/users', (resolver) => {
+    http.get('https://jsonplaceholder.typicode.com/users', () => {
         return HttpResponse.json(mockData)
     }),
-    http.get(TODOS_API_URL, (resolver) => {
+    http.get(TODOS_API_URL, () => {
         return HttpResponse.json(todosMock)
     }),
-    http.get(LIBRARY_API, (resolver) => {
+
+    // Library Management
+    http.get(LIBRARY_API, () => {
         return HttpResponse.json(libraryMoock)
     }),
     http.post(LIBRARY_API, async ({ request }) => {
         const newPost = await request.json();
         console.log('post REQUEST:::::', newPost);
 
-        return HttpResponse.json({
-            newPost
-        }, { status: 200 })
+        return HttpResponse.json({}, { status: 200 })
     })
 ]

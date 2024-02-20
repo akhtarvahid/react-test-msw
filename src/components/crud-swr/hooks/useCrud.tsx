@@ -39,7 +39,7 @@ async function postRequest(url: RequestInfo | URL, { arg }: { arg: Book }) {
 }
 
 // get books
-async function getRequest(url: RequestInfo | URL) {
+export const getRequest = async (url: RequestInfo | URL) => {
   return fetch(url, {
     method: "GET",
   }).then((res) => res.json());

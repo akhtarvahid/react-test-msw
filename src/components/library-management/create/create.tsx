@@ -1,6 +1,8 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useState } from "react";
+import React, { useState } from "react";
+import { isFieldsEmpty } from "../helper/helper";
+import { LIBRARY_API } from "../constant";
 
 export interface Book {
   title: string;
@@ -8,8 +10,8 @@ export interface Book {
   price: string;
 }
 type CreateProps = {
-  onAddBook: any
-}
+  onAddBook: React.Dispatch<Book>;
+};
 
 const initialState = {
   title: "",
@@ -18,69 +20,83 @@ const initialState = {
 };
 const Create: React.FC<CreateProps> = ({ onAddBook }) => {
   const [form, setForm] = useState<Book>(initialState);
-  const [responseMessage, setResponseMessage] = useState<string | undefined>('');
+  const [responseMsg, setResponseMsg] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>("");
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
     setForm((f) => {
       return {
         ...f,
-        [e.target.name]: e.target.value,
+        [e.target.name]: value,
       };
     });
   };
-  const submitHandler = (e: { preventDefault: () => void }) => {
+
+  const submitHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if(form.title) {
-      onAddBook(form);
-    } else {
-      setResponseMessage('Fields are empty')
-    }
+    if(!isFieldsEmpty(form))
+    fetch(LIBRARY_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        onAddBook(res);
+        setResponseMsg("Successfully created");
+      })
+      .catch(() => setError("Something went wrong!"));
   };
 
   return (
     <>
-    <Form>
-      <Form.Group className="mb-3" controlId="title">
-        <Form.Label>Title</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter title"
-          name="title"
-          onChange={handleFormChange}
-          value={form.title || ""}
-        />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="author">
-        <Form.Label>Author</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter author"
-          name="author"
-          value={form.author || ""}
-          onChange={handleFormChange}
-        />
-      </Form.Group>
+      <div>{responseMsg}</div>
+      <div>{error}</div>
+      <Form>
+        <Form.Group className="mb-3" controlId="title">
+          <Form.Label>Title</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter title"
+            name="title"
+            onChange={handleFormChange}
+            value={form.title || ""}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="author">
+          <Form.Label>Author</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter author"
+            name="author"
+            value={form.author || ""}
+            onChange={handleFormChange}
+          />
+        </Form.Group>
 
-      <Form.Group className="mb-3" controlId="price">
-        <Form.Label>Price</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Price"
-          name="price"
-          value={form.price || ""}
-          onChange={handleFormChange}
-        />
-      </Form.Group>
-      <Button
-        variant="primary"
-        type="submit"
-        name="Submit"
-        onClick={submitHandler}
-      >
-        Submit
-      </Button>
-      <p data-testid="msg">{responseMessage ? responseMessage : ''}</p>
-    </Form>
+        <Form.Group className="mb-3" controlId="price">
+          <Form.Label>Price</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Price"
+            name="price"
+            value={form.price || ""}
+            onChange={handleFormChange}
+          />
+        </Form.Group>
+        <Button
+          variant="primary"
+          type="submit"
+          name="Submit"
+          onClick={submitHandler}
+        >
+          Submit
+        </Button>
+      </Form>
     </>
   );
 };

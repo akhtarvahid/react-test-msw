@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react"
 import Listing from "./Listing";
 import { server } from "../../../mocks/server";
+import { libraryMoock } from "../../../utils/mock-data/mock-data";
 
 beforeAll(() => {
     // Start the interception.
@@ -21,11 +22,14 @@ afterAll(() => {
 // AAA(Arrange-Act-Assert)
 
 describe('Library Listing component', () => {
-
+    it('users undefined', async () => {
+        render(<Listing books={[]} />);
+        const listItem = screen.queryByText('Enrique Stokes');
+        expect(listItem).not.toBeInTheDocument();
+    })
     it('users fetched successfully', async () => {
-        const mockData = [{ id: 1, title: 'Enrique Stokes'}, { id: 2, title: 'MERN Stack'}]
-        render(<Listing books={mockData} />);
-        const heading = await screen.findByText('Enrique Stokes');
-        expect(heading).toBeInTheDocument();
+        render(<Listing books={libraryMoock} />);
+        const listItem = await screen.findByText('Enrique Stokes');
+        expect(listItem).toBeInTheDocument();
     })
 })
