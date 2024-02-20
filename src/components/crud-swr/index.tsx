@@ -6,6 +6,7 @@ import { Book, BookResponse } from "../../types/common-types";
 import UpdateBook from "./UpdateBook";
 import useSWR, { mutate } from "swr";
 import { LIBRARY_API } from "../library-management/constant";
+import './style.css';
 
 const CrudWithSWR = () => {
   const [selected, setSelected] = useState<BookResponse | null>(null);
@@ -52,16 +53,17 @@ const CrudWithSWR = () => {
 
   return (
     <div>
-      <h1>Book Store</h1>
+      <h2>Add Book To Store</h2>
       {!selected ? (
         <AddBook onAddBook={handleAddBook} />
       ) : (
         <UpdateBook onUpdateBook={handleUpateBook} selected={selected} />
       )}
       {isLoading ? (
-        <h1>Loading...</h1>
+        <h2>Loading...</h2>
       ) : (
         <BookList
+          title="Books Available"
           books={[...booksFromStore].reverse()}
           setSelected={setSelected}
           handleDeleteBook={handleDeleteBook}

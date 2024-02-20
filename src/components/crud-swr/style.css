@@ -1,0 +1,20 @@
+.subText {
+    text-align: initial;
+}
+.badges {
+    display: flex;
+    flex-direction: column;
+}
+.badges span {
+    margin: 3px;
+    cursor: pointer;
+}
+.badges span:first-child {
+    background: green !important;
+}
+.badges span:last-child {
+    background: red !important;
+}
+.books-title {
+    margin: 45px 0px 40px 0;
+}

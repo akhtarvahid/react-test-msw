@@ -24,6 +24,11 @@ const AddBook: React.FC<CreateProps> = ({ onAddBook }) => {
   const submitHandler = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     onAddBook(form);
+    setForm({
+      title: '',
+      author: '',
+      price: ''
+    })
   };
 
   return (
