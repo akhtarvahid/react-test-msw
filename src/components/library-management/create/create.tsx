@@ -3,14 +3,11 @@ import Form from "react-bootstrap/Form";
 import React, { useState } from "react";
 import { isFieldsEmpty } from "../helper/helper";
 import { LIBRARY_API } from "../constant";
+import { Book, BookResponse } from "../../../types/common-types";
 
-export interface Book {
-  title: string;
-  author: string;
-  price: string;
-}
+
 type CreateProps = {
-  onAddBook: React.Dispatch<Book>;
+  onAddBook: React.Dispatch<BookResponse>;
 };
 
 const initialState = {

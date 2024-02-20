@@ -1,5 +1,5 @@
-import { Book } from "../create/create"
 import { addBook, getBooks } from "../../../api/api";
+import { Book } from "../../../types/common-types";
 
 export const createBookLibrary = async (form: Book) => {
        let result;

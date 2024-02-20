@@ -1,19 +1,13 @@
 import ListGroup from "react-bootstrap/ListGroup";
 import Card from "react-bootstrap/Card";
-import { Book } from "../create/create";
+import { BookResponse } from "../../../types/common-types";
 
-export interface Books extends Book {
-  id: string;
-  image: string;
-  createdAt: string;
-}
-
-function Listing({ books }: any) {
+const Listing:React.FC<{books: BookResponse[]}> = ({ books }) => {
   return (
     <div data-testid="library">
       <h1>Library</h1>
       <ListGroup>
-        {books?.map((book: Books) => (
+        {books?.map((book: BookResponse) => (
           <ListGroup.Item key={book.id}>
             <Card.Title>{book.title}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
