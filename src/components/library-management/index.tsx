@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Listing from "./Listing/Listing";
 import Create from "./create/create";
 import { getBookLibrary } from "./helper/helper";
+import { BookResponse } from "../../types/common-types";
 
 function Library() {
   const [bookStore, setBookStore] = useState<any>([]);
@@ -17,9 +18,12 @@ function Library() {
 
   const handleAddBook = async (newBook: any) => {
     setIsLoading(true);
-    setBookStore((prevBooks: any) => [newBook, ...prevBooks]);
+    setBookStore((prevBooks: BookResponse[]) => [newBook, ...prevBooks]);
     setIsLoading(false);
   };
+  const handleDeleteBook = (id: string) => {
+    setBookStore((prevBooks: BookResponse[]) => prevBooks.filter(book => book.id !== id));
+  }
 
   return (
     <>
@@ -27,7 +31,7 @@ function Library() {
       <div data-testid="library">
         <h1>Library Form</h1>
         <Create onAddBook={handleAddBook} />
-        <Listing books={bookStore} />
+        <Listing books={bookStore} deleteBook={handleDeleteBook} />
       </div>
     </>
   );

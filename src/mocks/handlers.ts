@@ -20,5 +20,11 @@ export const handlers = [
         console.log('post REQUEST:::::', newPost);
 
         return HttpResponse.json({}, { status: 200 })
+    }),
+    http.delete(`${LIBRARY_API}/:id`,  ({ params }) => {
+      const { id } = params;
+      console.log(`Deleted data for: ${id}`);
+      return HttpResponse.json({}, { status: 200 })
     })
+
 ]
