@@ -1,13 +1,14 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isFieldsEmpty } from "../helper/helper";
 import { LIBRARY_API } from "../constant";
 import { Book, BookResponse } from "../../../types/common-types";
 
-
 type CreateProps = {
   onAddBook: React.Dispatch<BookResponse>;
+  selectedBook: BookResponse | null | undefined;
+  setSelectedBook: React.Dispatch<BookResponse | null>;
 };
 
 const initialState = {
@@ -15,10 +16,22 @@ const initialState = {
   author: "",
   price: "",
 };
-const Create: React.FC<CreateProps> = ({ onAddBook }) => {
+const Create: React.FC<CreateProps> = ({
+  onAddBook,
+  selectedBook,
+  setSelectedBook,
+}) => {
   const [form, setForm] = useState<Book>(initialState);
   const [responseMsg, setResponseMsg] = useState<string | undefined>("");
   const [error, setError] = useState<string | undefined>("");
+
+  useEffect(() => {
+    setForm({
+      title: selectedBook?.title || "",
+      author: selectedBook?.author || "",
+      price: selectedBook?.price || "",
+    });
+  }, [selectedBook]);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -33,9 +46,27 @@ const Create: React.FC<CreateProps> = ({ onAddBook }) => {
 
   const submitHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if(!isFieldsEmpty(form))
-    fetch(LIBRARY_API, {
-      method: "POST",
+    if (!isFieldsEmpty(form))
+      fetch(LIBRARY_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          onAddBook(res);
+          setResponseMsg("Successfully created");
+        })
+        .catch(() => setError("Something went wrong!"));
+  };
+
+  const handleUpdate = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    fetch(`${LIBRARY_API}/${selectedBook?.id}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -43,10 +74,12 @@ const Create: React.FC<CreateProps> = ({ onAddBook }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        onAddBook(res);
-        setResponseMsg("Successfully created");
+        setResponseMsg("Updated succesfully");
       })
-      .catch(() => setError("Something went wrong!"));
+      .catch((err) => {
+        setError("Error occured while updation!");
+      });
+    setSelectedBook(null);
   };
 
   return (
@@ -85,14 +118,25 @@ const Create: React.FC<CreateProps> = ({ onAddBook }) => {
             onChange={handleFormChange}
           />
         </Form.Group>
-        <Button
-          variant="primary"
-          type="submit"
-          name="Submit"
-          onClick={submitHandler}
-        >
-          Submit
-        </Button>
+        {!selectedBook ? (
+          <Button
+            variant="primary"
+            type="submit"
+            name="Submit"
+            onClick={submitHandler}
+          >
+            Submit
+          </Button>
+        ) : (
+          <Button
+            variant="primary"
+            type="submit"
+            name="Update"
+            onClick={handleUpdate}
+          >
+            Update
+          </Button>
+        )}
       </Form>
     </>
   );

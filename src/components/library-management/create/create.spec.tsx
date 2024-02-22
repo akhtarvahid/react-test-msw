@@ -3,7 +3,6 @@ import {
   render,
   screen,
   waitFor,
-  waitForElementToBeRemoved,
 } from "@testing-library/react";
 import Create from "./create";
 // act should be from @testing-library/react 👉 not from 'react-dom/test-utils';
@@ -13,6 +12,7 @@ import { server } from "../../../mocks/server";
 import { HttpResponse, http } from "msw";
 import { LIBRARY_API } from "../constant";
 import { isFieldsEmpty } from "../helper/helper";
+import { BookResponse } from "../../../types/common-types";
 
 beforeAll(() => {
   // Start the interception.
@@ -32,7 +32,13 @@ afterAll(() => {
 describe("Create Component", () => {
   it("should have 3 input field", () => {
     const mockFn = jest.fn();
-    render(<Create onAddBook={mockFn} />);
+    render(
+      <Create
+        onAddBook={mockFn}
+        selectedBook={null}
+        setSelectedBook={jest.fn()}
+      />
+    );
     const inputs = screen.getAllByRole("textbox");
     expect(inputs).toHaveLength(3);
     expect(screen.getByRole("textbox", { name: "Title" })).toBeInTheDocument();
@@ -42,7 +48,13 @@ describe("Create Component", () => {
   it("library title field", () => {
     const mockFn = jest.fn();
 
-    render(<Create onAddBook={mockFn} />);
+    render(
+      <Create
+        onAddBook={mockFn}
+        selectedBook={null}
+        setSelectedBook={jest.fn()}
+      />
+    );
     const title = screen.getByRole("textbox", { name: "Title" });
     expect(title).toHaveAttribute("value", "");
 
@@ -56,7 +68,13 @@ describe("Create Component", () => {
   it("library author field", () => {
     const mockFn = jest.fn();
 
-    render(<Create onAddBook={mockFn} />);
+    render(
+      <Create
+        onAddBook={mockFn}
+        selectedBook={null}
+        setSelectedBook={jest.fn()}
+      />
+    );
     const author = screen.getByRole("textbox", { name: "Author" });
     expect(author).toHaveAttribute("value", "");
 
@@ -70,7 +88,13 @@ describe("Create Component", () => {
   it("library price field", () => {
     const mockFn = jest.fn();
 
-    render(<Create onAddBook={mockFn} />);
+    render(
+      <Create
+        onAddBook={mockFn}
+        selectedBook={null}
+        setSelectedBook={jest.fn()}
+      />
+    );
     const price = screen.getByRole("textbox", { name: "Price" });
     expect(price).toHaveAttribute("value", "");
 
@@ -85,7 +109,13 @@ describe("Create Component", () => {
   it("submit new book in library successfully", async () => {
     const mockFn = jest.fn();
 
-    render(<Create onAddBook={mockFn} />);
+    render(
+      <Create
+        onAddBook={mockFn}
+        selectedBook={null}
+        setSelectedBook={jest.fn()}
+      />
+    );
     let title = screen.getByRole("textbox", { name: "Title" });
     let author = screen.getByRole("textbox", { name: "Author" });
     let price = screen.getByRole("textbox", { name: "Price" });
@@ -111,7 +141,13 @@ describe("Create Component", () => {
     );
     const mockFn = jest.fn();
 
-    render(<Create onAddBook={mockFn} />);
+    render(
+      <Create
+        onAddBook={mockFn}
+        selectedBook={null}
+        setSelectedBook={jest.fn()}
+      />
+    );
     let title = screen.getByRole("textbox", { name: "Title" });
     let author = screen.getByRole("textbox", { name: "Author" });
     let price = screen.getByRole("textbox", { name: "Price" });
@@ -144,5 +180,50 @@ describe("Create Component", () => {
       price: "$3",
     };
     expect(isFieldsEmpty(inputFields)).toBeFalsy();
+  });
+  it("should update successfully", async () => {
+    const mockSelectBookFn = jest.fn();
+    const book = {
+      title: "My book",
+      author: "akhtra",
+      price: "$24",
+    } as unknown as BookResponse;
+    render(
+      <Create
+        onAddBook={mockSelectBookFn}
+        selectedBook={book}
+        setSelectedBook={jest.fn()}
+      />
+    );
+    const updateBadge = screen.getByText("Update");
+    expect(updateBadge).toBeInTheDocument();
+
+    await act(async () => {
+      await userEvent.click(updateBadge);
+    });
+    waitFor(() => expect(screen.getByText("Updated succesfully")));
+  });
+  it("updating book details failure", async () => {
+    const mockSelectBookFn = jest.fn();
+    const book = {
+      title: "My book",
+      author: "akhtra",
+      price: "$24",
+    } as unknown as BookResponse;
+    render(
+      <Create
+        onAddBook={mockSelectBookFn}
+        selectedBook={book}
+        setSelectedBook={jest.fn()}
+      />
+    );
+    const updateBadge = screen.getByText("Update");
+    expect(updateBadge).toBeInTheDocument();
+
+    await act(async () => {
+      await userEvent.click(updateBadge);
+    });
+    waitFor(() => expect(screen.getByText("Error occured while updation!")));
+    waitFor(() => screen.debug());
   });
 });

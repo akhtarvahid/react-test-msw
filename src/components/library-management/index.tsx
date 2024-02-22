@@ -5,8 +5,9 @@ import { getBookLibrary } from "./helper/helper";
 import { BookResponse } from "../../types/common-types";
 
 function Library() {
-  const [bookStore, setBookStore] = useState<any>([]);
+  const [bookStore, setBookStore] = useState<BookResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedBook, setSelectedBook] = useState<BookResponse | null>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,16 +23,26 @@ function Library() {
     setIsLoading(false);
   };
   const handleDeleteBook = (id: string) => {
-    setBookStore((prevBooks: BookResponse[]) => prevBooks.filter(book => book.id !== id));
-  }
+    setBookStore((prevBooks: BookResponse[]) =>
+      prevBooks.filter((book) => book.id !== id)
+    );
+  };
 
   return (
     <>
       {isLoading && <h1 style={{ color: "green" }}>Loading...</h1>}
       <div data-testid="library">
         <h1>Library Form</h1>
-        <Create onAddBook={handleAddBook} />
-        <Listing books={bookStore} deleteBook={handleDeleteBook} />
+        <Create
+          onAddBook={handleAddBook}
+          selectedBook={selectedBook}
+          setSelectedBook={setSelectedBook}
+        />
+        <Listing
+          books={bookStore}
+          deleteBook={handleDeleteBook}
+          setSelectedBook={setSelectedBook}
+        />
       </div>
     </>
   );
