@@ -9,6 +9,7 @@ type CreateProps = {
   onAddBook: React.Dispatch<BookResponse>;
   selectedBook: BookResponse | null | undefined;
   setSelectedBook: React.Dispatch<BookResponse | null>;
+  onUpdateBook: React.Dispatch<BookResponse>;
 };
 
 const initialState = {
@@ -20,6 +21,7 @@ const Create: React.FC<CreateProps> = ({
   onAddBook,
   selectedBook,
   setSelectedBook,
+  onUpdateBook
 }) => {
   const [form, setForm] = useState<Book>(initialState);
   const [responseMsg, setResponseMsg] = useState<string | undefined>("");
@@ -57,6 +59,7 @@ const Create: React.FC<CreateProps> = ({
         .then((res) => res.json())
         .then((res) => {
           onAddBook(res);
+          setForm(initialState);
           setResponseMsg("Successfully created");
         })
         .catch(() => setError("Something went wrong!"));
@@ -75,6 +78,7 @@ const Create: React.FC<CreateProps> = ({
       .then((res) => res.json())
       .then((res) => {
         setResponseMsg("Updated succesfully");
+        onUpdateBook(res)
       })
       .catch((err) => {
         setError("Error occured while updation!");

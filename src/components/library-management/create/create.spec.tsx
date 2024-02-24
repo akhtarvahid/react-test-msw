@@ -37,6 +37,7 @@ describe("Create Component", () => {
         onAddBook={mockFn}
         selectedBook={null}
         setSelectedBook={jest.fn()}
+        onUpdateBook={jest.fn()}
       />
     );
     const inputs = screen.getAllByRole("textbox");
@@ -53,6 +54,7 @@ describe("Create Component", () => {
         onAddBook={mockFn}
         selectedBook={null}
         setSelectedBook={jest.fn()}
+        onUpdateBook={jest.fn()}
       />
     );
     const title = screen.getByRole("textbox", { name: "Title" });
@@ -73,6 +75,7 @@ describe("Create Component", () => {
         onAddBook={mockFn}
         selectedBook={null}
         setSelectedBook={jest.fn()}
+        onUpdateBook={jest.fn()}
       />
     );
     const author = screen.getByRole("textbox", { name: "Author" });
@@ -93,6 +96,7 @@ describe("Create Component", () => {
         onAddBook={mockFn}
         selectedBook={null}
         setSelectedBook={jest.fn()}
+        onUpdateBook={jest.fn()}
       />
     );
     const price = screen.getByRole("textbox", { name: "Price" });
@@ -114,6 +118,7 @@ describe("Create Component", () => {
         onAddBook={mockFn}
         selectedBook={null}
         setSelectedBook={jest.fn()}
+        onUpdateBook={jest.fn()}
       />
     );
     let title = screen.getByRole("textbox", { name: "Title" });
@@ -146,6 +151,7 @@ describe("Create Component", () => {
         onAddBook={mockFn}
         selectedBook={null}
         setSelectedBook={jest.fn()}
+        onUpdateBook={jest.fn()}
       />
     );
     let title = screen.getByRole("textbox", { name: "Title" });
@@ -160,7 +166,6 @@ describe("Create Component", () => {
     await act(async () => {
       await userEvent.click(screen.getByRole("button", { name: "Submit" }));
     });
-    //waitFor(()=> screen.debug());
     // Wait for the async operation to complete
     expect(screen.getByText("Something went wrong!")).toBeInTheDocument();
   });
@@ -193,6 +198,7 @@ describe("Create Component", () => {
         onAddBook={mockSelectBookFn}
         selectedBook={book}
         setSelectedBook={jest.fn()}
+        onUpdateBook={jest.fn()}
       />
     );
     const updateBadge = screen.getByText("Update");
@@ -215,6 +221,7 @@ describe("Create Component", () => {
         onAddBook={mockSelectBookFn}
         selectedBook={book}
         setSelectedBook={jest.fn()}
+        onUpdateBook={jest.fn()}
       />
     );
     const updateBadge = screen.getByText("Update");
@@ -224,6 +231,5 @@ describe("Create Component", () => {
       await userEvent.click(updateBadge);
     });
     waitFor(() => expect(screen.getByText("Error occured while updation!")));
-    waitFor(() => screen.debug());
   });
 });

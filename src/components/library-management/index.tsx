@@ -28,6 +28,12 @@ function Library() {
     );
   };
 
+  const handleUpdateBook = (book: BookResponse) => {
+    setBookStore((prevBooks: BookResponse[]) =>
+      prevBooks.map((b) => b.id === book.id ? book : b)
+    );
+  }
+
   return (
     <>
       {isLoading && <h1 style={{ color: "green" }}>Loading...</h1>}
@@ -37,6 +43,7 @@ function Library() {
           onAddBook={handleAddBook}
           selectedBook={selectedBook}
           setSelectedBook={setSelectedBook}
+          onUpdateBook={handleUpdateBook}
         />
         <Listing
           books={bookStore}
