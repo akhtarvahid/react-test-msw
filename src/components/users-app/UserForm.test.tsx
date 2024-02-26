@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import UserForm from './UserForm';
+import { act } from 'react-dom/test-utils';
 
 test('it shows two inputs and a button', () => {
   // render the component
@@ -30,13 +31,16 @@ test('it calls onUserAdd when the form is submitted', async () => {
   });
 
   // Simulate typing in a name
-  await user.click(nameInput);
-  await user.keyboard('jane');
+  await act(async () => {
+     await user.click(nameInput);
+     await user.keyboard('jane');
+  })
 
   // Simulate typing in an email
-  await user.click(emailInput);
-  await user.keyboard('jane@jane.com');
-
+  await act(async () => {
+    await user.click(emailInput);
+    await user.keyboard('jane@jane.com');
+  })
   // Find the button
   const button = screen.getByRole('button');
 

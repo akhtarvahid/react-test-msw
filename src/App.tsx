@@ -1,12 +1,12 @@
 import './App.css';
-import Library from './components/library-management';
 import NavBar from './components/common/navbar/NavBar';
+import UsersApp from './components/users-app/Index';
 
 function App() {
   return (
     <div className="App" data-testid="app">
-       <NavBar title="Library" />
-       <Library />
+       <NavBar title="Users App" />
+       <UsersApp />
     </div>
   );
 }
