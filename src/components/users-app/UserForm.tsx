@@ -8,6 +8,8 @@ function UserForm({ onUserAdd }: any) {
     event.preventDefault();
 
     onUserAdd({ name, email });
+    setName('');
+    setEmail('');
   };
 
   return (
