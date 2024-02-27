@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import UserForm from './UserForm';
 import { act } from 'react-dom/test-utils';
@@ -45,15 +45,17 @@ test('it calls onUserAdd when the form is submitted', async () => {
   const button = screen.getByRole('button');
 
   // Simulate clicking the button
-  await user.click(button);
-
+  await act(async () => {
+    await user.click(button);
+  })
   // Assertion to make sure 'onUserAdd' gets called with email/name
   expect(mock).toHaveBeenCalled();
   expect(mock).toHaveBeenCalledWith({ name: 'jane', email: 'jane@jane.com' });
 });
 
 test('empties the two inputs when form is submitted', async () => {
-  render(<UserForm onUserAdd={() => {}} />);
+  let mockFn = jest.fn();
+  const cmp = render(<UserForm onUserAdd={mockFn} />);
 
   const nameInput = screen.getByRole('textbox', { name: /name/i });
   const emailInput = screen.getByRole('textbox', { name: /email/i });
@@ -70,6 +72,7 @@ test('empties the two inputs when form is submitted', async () => {
     await user.click(button);
   })
 
+  expect(mockFn).toHaveBeenCalled();
   expect(nameInput).toHaveValue('');
   expect(emailInput).toHaveValue('');
 });
