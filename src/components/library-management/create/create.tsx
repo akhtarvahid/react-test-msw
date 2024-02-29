@@ -68,21 +68,29 @@ const Create: React.FC<CreateProps> = ({
   const handleUpdate = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    fetch(`${LIBRARY_API}/${selectedBook?.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setResponseMsg("Updated succesfully");
-        onUpdateBook(res)
-      })
-      .catch((err) => {
-        setError("Error occured while updation!");
+    try {
+      // Making PUT API call to update data
+      const response = await fetch(`${LIBRARY_API}/${selectedBook?.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
       });
+
+      const result = await response.json();
+      onUpdateBook(result);
+      setResponseMsg("Updated succesfully");
+
+      if (!result) {
+        setError("Error occured while updation!");
+        // throw new Error('Update failed');
+      }
+
+    } catch (error) {
+      console.error();
+      // throw new Error(`Error updating data: ${error}`);
+    }
     setSelectedBook(null);
   };
 

@@ -189,10 +189,13 @@ describe("Create Component", () => {
   it("should update successfully", async () => {
     const mockSelectBookFn = jest.fn();
     const book = {
-      title: "My book",
-      author: "akhtra",
-      price: "$24",
-    } as unknown as BookResponse;
+      createdAt: "2024-02-15T00:30:45.319Z",
+      title: "Peter Weber DVM",
+      image: "https://loremflickr.com/640/480/nature",
+      author: "author 2",
+      price: "price 2",
+      id: "2"
+    } as BookResponse;
     render(
       <Create
         onAddBook={mockSelectBookFn}
@@ -211,19 +214,29 @@ describe("Create Component", () => {
   });
   it("updating book details failure", async () => {
     const mockSelectBookFn = jest.fn();
-    const book = {
-      title: "My book",
-      author: "akhtra",
-      price: "$24",
-    } as unknown as BookResponse;
-    render(
-      <Create
-        onAddBook={mockSelectBookFn}
-        selectedBook={book}
-        setSelectedBook={jest.fn()}
-        onUpdateBook={jest.fn()}
-      />
-    );
+    const book: BookResponse = {
+      createdAt: "2024-02-15T04:36:36.147Z",
+      title: "Enrique Stokes",
+      image: "https://loremflickr.com/640/480/nature",
+      author: "author 1",
+      price: "price 1",
+      id: "1"
+    };
+
+    server.use(
+      http.put(`${LIBRARY_API}/1`, async() =>{
+        return HttpResponse.error();
+      })
+    )
+   
+      render(
+        <Create
+          onAddBook={mockSelectBookFn}
+          selectedBook={book}
+          setSelectedBook={jest.fn()}
+          onUpdateBook={jest.fn()}
+        />
+      );
     const updateBadge = screen.getByText("Update");
     expect(updateBadge).toBeInTheDocument();
 
@@ -231,5 +244,6 @@ describe("Create Component", () => {
       await userEvent.click(updateBadge);
     });
     waitFor(() => expect(screen.getByText("Error occured while updation!")));
+    waitFor(() => expect(screen.getByText('Update failed')).toBeInTheDocument() );
   });
 });

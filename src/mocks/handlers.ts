@@ -35,6 +35,6 @@ export const handlers = [
     const { id } = params;
     const nextPost = await request.json();
     console.log("PUT data with:", id, nextPost);
-    return HttpResponse.json({}, { status: 200 });
+    return HttpResponse.json({ nextPost }, { status: 200 });
   }),
 ];
