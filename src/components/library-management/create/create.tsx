@@ -21,7 +21,7 @@ const Create: React.FC<CreateProps> = ({
   onAddBook,
   selectedBook,
   setSelectedBook,
-  onUpdateBook
+  onUpdateBook,
 }) => {
   const [form, setForm] = useState<Book>(initialState);
   const [responseMsg, setResponseMsg] = useState<string | undefined>("");
@@ -78,9 +78,9 @@ const Create: React.FC<CreateProps> = ({
     try {
       // Making PUT API call to update data
       const response = await fetch(`${LIBRARY_API}/${selectedBook?.id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(form),
       });
@@ -91,12 +91,9 @@ const Create: React.FC<CreateProps> = ({
 
       if (!result) {
         setError("Error occured while updation!");
-        // throw new Error('Update failed');
       }
-
     } catch (error) {
       console.error();
-      // throw new Error(`Error updating data: ${error}`);
     }
     setSelectedBook(null);
   };
