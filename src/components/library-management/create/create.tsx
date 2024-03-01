@@ -38,9 +38,9 @@ const Create: React.FC<CreateProps> = ({
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
-    setForm((f) => {
+    setForm((values) => {
       return {
-        ...f,
+        ...values,
         [e.target.name]: value,
       };
     });
