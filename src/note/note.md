@@ -107,6 +107,36 @@ userEvent.type(input, 'hello world')
 
 //Note: Use `@testing-library/user-event` over `fireEvent` where possible.
 
+```
 
+### 8. Using `query*` variants for anything except checking for non-existence
+
+```js
+
+// ❌
+expect(screen.queryByRole('alert')).toBeInTheDocument()
+
+// ✅
+expect(screen.getByRole('alert')).toBeInTheDocument()
+expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+
+// Note: Only use the `query*` variants for asserting that an element cannot be found.
+
+
+```
+
+### 9. Using `waitFor` to wait for elements that can be queried with find*
+
+```js
+
+// ❌
+const submitButton = await waitFor(() =>
+  screen.getByRole('button', {name: /submit/i}),
+)
+
+// ✅
+const submitButton = await screen.findByRole('button', {name: /submit/i})
+
+// Note: use find* any time you want to query for something that may not be available right away.
 
 ```
