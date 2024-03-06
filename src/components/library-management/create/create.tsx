@@ -35,6 +35,13 @@ const Create: React.FC<CreateProps> = ({
     });
   }, [selectedBook]);
 
+  useEffect(() => {
+    setTimeout(() => {
+       setResponseMsg('');
+       setError('');
+    }, 5000);
+  }, [error, responseMsg])
+
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
 
