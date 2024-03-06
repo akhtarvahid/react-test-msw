@@ -137,6 +137,23 @@ const submitButton = await waitFor(() =>
 // ✅
 const submitButton = await screen.findByRole('button', {name: /submit/i})
 
-// Note: use find* any time you want to query for something that may not be available right away.
+// Note: use `find*` any time you want to query for something that may not be available right away.
+
+```
+
+### 10. Passing an empty callback to waitFor
+
+```js
+
+// ❌
+await waitFor(() => {})
+expect(window.fetch).toHaveBeenCalledWith('foo')
+expect(window.fetch).toHaveBeenCalledTimes(1)
+
+// ✅
+await waitFor(() => expect(window.fetch).toHaveBeenCalledWith('foo'))
+expect(window.fetch).toHaveBeenCalledTimes(1);
+
+// Note: wait for a specific assertion inside waitFor.
 
 ```
