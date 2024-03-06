@@ -82,3 +82,31 @@ render(<Example />)
 screen.getByRole('button', {name: /click me/i})
 
 ```
+
+### 6. Advice: Avoid adding unnecessary or incorrect accessibility attributes.
+
+```js
+
+// ❌
+render(<button role="button">Click me</button>)
+
+// ✅
+render(<button>Click me</button>)
+
+```
+
+### 7. Start preferring `@testing-library/user-event`.
+
+```js
+
+// ❌
+fireEvent.change(input, {target: {value: 'hello world'}})
+
+// ✅
+userEvent.type(input, 'hello world')
+
+//Note: Use `@testing-library/user-event` over `fireEvent` where possible.
+
+
+
+```
