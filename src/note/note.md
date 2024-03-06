@@ -26,3 +26,59 @@ render(<Example />)
 const errorMessageNode = screen.getByRole('alert')
 
 ```
+
+### 4. Wrapping things in act unnecessarily
+
+```js
+
+// ❌
+act(() => {
+  render(<Example />)
+})
+
+const input = screen.getByRole('textbox', {name: /choose a fruit/i})
+act(() => {
+  fireEvent.keyDown(input, {key: 'ArrowDown'})
+})
+
+// ✅
+render(<Example />)
+const input = screen.getByRole('textbox', {name: /choose a fruit/i})
+fireEvent.keyDown(input, {key: 'ArrowDown'})
+
+```
+
+### 5. Preferred way to query elements
+
+```js
+
+// ❌
+// assuming you've got this DOM to work with:
+// <label>Username</label><input data-testid="username" />
+screen.getByTestId('username')
+
+// ✅
+// change the DOM to be accessible by associating the label and setting the type
+// <label for="username">Username</label><input id="username" type="text" />
+screen.getByRole('textbox', {name: /username/i})
+
+
+
+// ❌
+screen.getByTestId('submit-button')
+
+// ✅
+screen.getByRole('button', {name: /submit/i})
+
+
+// - Avoid container
+// ❌
+const {container} = render(<Example />)
+const button = container.querySelector('.btn-primary')
+expect(button).toHaveTextContent(/click me/i)
+
+// ✅
+render(<Example />)
+screen.getByRole('button', {name: /click me/i})
+
+```
