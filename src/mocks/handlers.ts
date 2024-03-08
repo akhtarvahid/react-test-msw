@@ -1,16 +1,12 @@
 import { HttpResponse, http } from "msw";
 import {
   libraryMoock,
-  mockData,
   todosMock,
 } from "../utils/mock-data/mock-data";
 import { TODOS_API_URL } from "../components/todo-app/Todos/Todos";
 import { LIBRARY_API } from "../components/library-management/constant";
 
 export const handlers = [
-  http.get("https://jsonplaceholder.typicode.com/users", () => {
-    return HttpResponse.json(mockData);
-  }),
   http.get(TODOS_API_URL, () => {
     return HttpResponse.json(todosMock);
   }),
