@@ -157,3 +157,39 @@ expect(window.fetch).toHaveBeenCalledTimes(1);
 // Note: wait for a specific assertion inside waitFor.
 
 ```
+
+### 11. Having multiple assertions in a single waitFor callback
+
+```js
+
+// ❌
+await waitFor(() => {
+  expect(window.fetch).toHaveBeenCalledWith('foo')
+  expect(window.fetch).toHaveBeenCalledTimes(1)
+})
+
+// ✅
+await waitFor(() => expect(window.fetch).toHaveBeenCalledWith('foo'))
+expect(window.fetch).toHaveBeenCalledTimes(1)
+
+//NOTE: only put one assertion in a callback.
+
+```
+
+### 12. Performing side-effects in waitFor
+
+```js
+
+// ❌
+await waitFor(() => {
+  fireEvent.keyDown(input, {key: 'ArrowDown'})
+  expect(screen.getAllByRole('listitem')).toHaveLength(3)
+})
+
+// ✅
+fireEvent.keyDown(input, {key: 'ArrowDown'})
+await waitFor(() => {
+  expect(screen.getAllByRole('listitem')).toHaveLength(3)
+})
+
+```
