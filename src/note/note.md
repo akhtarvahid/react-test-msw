@@ -192,4 +192,18 @@ await waitFor(() => {
   expect(screen.getAllByRole('listitem')).toHaveLength(3)
 })
 
+// NOTE: put side-effects outside waitFor callbacks and reserve the callback for assertions only.
+```
+
+### 13. Using get* variants as assertions
+```js
+
+// ❌
+screen.getByRole('alert', {name: /error/i})
+
+// ✅
+expect(screen.getByRole('alert', {name: /error/i})).toBeInTheDocument()
+
+// NOTE: If you want to assert that something exists, make that assertion explicit.
+
 ```
