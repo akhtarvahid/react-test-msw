@@ -7,6 +7,7 @@ import {
   flexRender,
   SortingState,
   getSortedRowModel,
+  getFilteredRowModel
 } from "@tanstack/react-table";
 
 import "./style.css";
@@ -66,6 +67,7 @@ function Table() {
     },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onRowSelectionChange: setRowSelection,
   });
@@ -83,6 +85,8 @@ function Table() {
             return (
               <tr key={headerGroup.id} className="row-th">
                 {headers.map((header) => {
+                    const columnFilterValue = header.column.getFilterValue()
+
                   return (
                     <th
                       key={header.id}
@@ -92,6 +96,17 @@ function Table() {
                         header.column.columnDef.header,
                         header.getContext()
                       )}
+                      {header.column.getCanFilter() ? (
+                        <div>
+                          <input
+                            type="text"
+                            value={(columnFilterValue ?? '') as string}
+                            onChange={e => header.column.setFilterValue(e.target.value)}
+                            placeholder={`Search...`}
+                            className="w-36 border shadow rounded"
+                          />
+                        </div>
+                      ) : null}
                     </th>
                   );
                 })}
