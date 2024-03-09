@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+# hidden files
+/src/utils/env.ts
+
 # testing
 /coverage
 

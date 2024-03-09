@@ -10,8 +10,9 @@ import {
 } from "@tanstack/react-table";
 
 import "./style.css";
+import { SERIES_API } from "../../utils/env";
 
-const URL = "https://rickandmortyapi.com/api";
+
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
 
@@ -20,7 +21,7 @@ function Table() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowSelection, setRowSelection] = React.useState({});
   const { data, error } = useSWR(
-    `${URL}/character/?page=${pageIndex}`,
+    `${SERIES_API}/character/?page=${pageIndex}`,
     fetcher
   );
 
@@ -71,8 +72,6 @@ function Table() {
 
   if (error) return <div>Error loading data</div>;
   if (!data) return <div>Loading...</div>;
-
-  console.log("data:::", data);
 
   return (
     <div>
