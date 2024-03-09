@@ -72,9 +72,6 @@ function Table() {
   if (error) return <div>Error loading data</div>;
   if (!data) return <div>Loading...</div>;
 
-  const loadMoreHandler = () => {
-    setPageIndex((page: number) => page + 1);
-  };
   console.log("data:::", data);
 
   return (
@@ -123,7 +120,11 @@ function Table() {
         </tbody>
       </table>
       <hr />
-      <button onClick={loadMoreHandler}>Load more</button>
+      <span>Page {pageIndex} of {data?.info?.pages}</span>
+       <button  disabled={pageIndex <= 1 ? true: false} onClick={()=> setPageIndex(1)}>First page</button>
+       <button  disabled={data?.info?.prev ? false: true} onClick={()=> setPageIndex((page: number) => page - 1)}>Prev</button>
+       <button  disabled={data?.info?.next ? false: true} onClick={()=> setPageIndex((page: number) => page + 1)}>Next</button>
+       <button  disabled={data?.info?.pages === pageIndex ? true: false} onClick={()=> setPageIndex(data?.info?.pages)}>Last page</button>
     </div>
   );
 }
