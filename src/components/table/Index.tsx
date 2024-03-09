@@ -12,7 +12,7 @@ import {
 
 import "./style.css";
 import { SERIES_API } from "../../utils/env";
-
+import { Series } from "../../types/table/series";
 
 const fetcher = (url: RequestInfo | URL) =>
   fetch(url).then((res) => res.json());
@@ -26,7 +26,7 @@ function Table() {
     fetcher
   );
 
-  const tableHeadData = React.useMemo<ColumnDef<any>[]>(
+  const tableHeadData = React.useMemo<ColumnDef<Series>[]>(
     () => [
       {
         Header: "ID",
@@ -52,7 +52,7 @@ function Table() {
     []
   );
   const tableBodyData = React.useMemo(() => {
-    return data?.results?.map((result: any) => ({
+    return data?.results?.map((result: Series) => ({
       ...result,
       location: result?.location?.name,
     }));
