@@ -120,7 +120,7 @@ function Table() {
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => {
                   return (
-                    <td className="styled-div2" key={cell.id}>
+                    <td className="table-data-td" key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
