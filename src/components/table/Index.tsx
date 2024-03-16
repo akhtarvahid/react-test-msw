@@ -76,7 +76,7 @@ function Table() {
   if (!data) return <div>Loading...</div>;
 
   return (
-    <div>
+    <div data-testid="table-main">
       <div>Table</div>
       <table>
         <thead>
