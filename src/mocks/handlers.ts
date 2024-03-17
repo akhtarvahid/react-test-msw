@@ -19,7 +19,7 @@ export const handlers = [
   }),
   http.post(LIBRARY_API, async ({ request }) => {
     const newPost = await request.json();
-    console.log(`POST REQUEST data for: ${newPost}`);
+    console.log(`POST REQUEST data for: ${JSON.stringify(newPost)}`);
 
     return HttpResponse.json({}, { status: 200 });
   }),
@@ -36,10 +36,18 @@ export const handlers = [
   }),
 
   // Table 
-  http.get(`${SERIES_API}/character/?page=1`, async ({ request, params }) => {
-   
+  http.get(`${SERIES_API}/character`, async ({ request }) => {
+    const url = new URL(request.url);
+    console.log('url::::', JSON.stringify(url));
+    const characterId = url.searchParams.get('page')
+    console.log('characterId::::', characterId);
+
+    if (!characterId) {
+      return new HttpResponse(null, { status: 404 })
+    }
+
     return HttpResponse.json({
-        info: {},
+        info: { pages: characterId },
         results: [{
             id: 1,
             name: "Rick Sanchez",
