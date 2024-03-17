@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Table from "../Index";
 import { server } from "../../../mocks/server";
 
@@ -19,19 +19,24 @@ afterAll(() => {
 });
 
 describe("Table component", () => {
-  test("render table row per page", () => {
+  test("render table row per page", async () => {
     // Render the component
     render(<Table />);
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Rick Sanchez'));
+    expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
   });
 
-  test("render component asynchronously to render data", async () => {
+  test("render next page data after firing next page event", async () => {
+
     // Render the component
     render(<Table />);
 
-    await waitFor(() => {
-      screen.debug();
-    });
+    fireEvent.click(screen.getByText('Next')); 
+    await expect(screen.getByText("Loading...")).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Aqua Morty'));
+    expect(screen.getByText('Aqua Morty')).toBeInTheDocument();
+    screen.debug();
   });
 });

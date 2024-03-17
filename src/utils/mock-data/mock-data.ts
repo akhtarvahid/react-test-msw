@@ -28,3 +28,49 @@ export const libraryMoock = [{
     price: "price 1",
     id: "1"
 }]
+
+export const charactersMock = [
+    {
+        id: 1,
+        name: "Rick Sanchez",
+        status: "Alive",
+        species: "Human",
+        type: "",
+        gender: "Male",
+        origin: {
+            name: "Earth (C-137)",
+            url: "https://rickandmortyapi.com/api/location/1"
+        },
+        location: {
+            name: "Citadel of Ricks",
+            url: "https://rickandmortyapi.com/api/location/3"
+        },
+        image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        episode: [],
+        url: "https://rickandmortyapi.com/api/character/1",
+        created: "2017-11-04T18:48:46.250Z"
+    },
+    {
+        id: 2,
+        name: 'Aqua Morty',
+        status: 'unknown',
+        species: 'Humanoid',
+        type: 'Fish-Person',
+        gender: 'Male',
+        origin: {
+          name: 'unknown',
+          url: ''
+        },
+        location: {
+          name: 'Citadel of Ricks',
+          url: 'https://rickandmortyapi.com/api/location/3'
+        },
+        image: 'https://rickandmortyapi.com/api/character/avatar/21.jpeg',
+        episode: [
+          'https://rickandmortyapi.com/api/episode/10',
+          'https://rickandmortyapi.com/api/episode/22'
+        ],
+        url: 'https://rickandmortyapi.com/api/character/21',
+        created: '2017-11-04T22:39:48.055Z'
+      }
+]

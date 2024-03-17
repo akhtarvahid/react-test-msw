@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import UserList from './UserList';
 
 function renderComponent() {
@@ -19,9 +19,11 @@ test('render one row per user', () => {
 
   // Find all the rows in the table
   const rows = within(screen.getByTestId('users')).getAllByRole('row');
-
+  
   // Assertion: correct number of rows in the table
   expect(rows).toHaveLength(2);
+  const cells = within(screen.getByTestId('users')).getAllByRole('cell')
+  expect(cells).toHaveLength(4);
 });
 
 test('render the email and name of each user', () => {

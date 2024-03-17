@@ -1,5 +1,6 @@
 import { HttpResponse, http } from "msw";
 import {
+  charactersMock,
   libraryMoock,
   todosMock,
 } from "../utils/mock-data/mock-data";
@@ -46,28 +47,11 @@ export const handlers = [
       return new HttpResponse(null, { status: 404 })
     }
 
+    const pageIndex = parseInt(characterId);
+    
     return HttpResponse.json({
-        info: { pages: characterId },
-        results: [{
-            id: 1,
-            name: "Rick Sanchez",
-            status: "Alive",
-            species: "Human",
-            type: "",
-            gender: "Male",
-            origin: {
-                name: "Earth (C-137)",
-                url: "https://rickandmortyapi.com/api/location/1"
-            },
-            location: {
-                name: "Citadel of Ricks",
-                url: "https://rickandmortyapi.com/api/location/3"
-            },
-            image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-            episode: [],
-            url: "https://rickandmortyapi.com/api/character/1",
-            created: "2017-11-04T18:48:46.250Z"
-        }]
+        info: { pages: 5, next: true },
+        results: [charactersMock[pageIndex-1]]
     });
 })
 ];
