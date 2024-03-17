@@ -5,6 +5,7 @@ import {
 } from "../utils/mock-data/mock-data";
 import { TODOS_API_URL } from "../components/todo-app/Todos/Todos";
 import { LIBRARY_API } from "../components/library-management/constant";
+import { SERIES_API } from "../utils/env";
 
 export const handlers = [
   http.get(TODOS_API_URL, () => {
@@ -33,4 +34,32 @@ export const handlers = [
     console.log("PUT data with:", id, nextPost);
     return HttpResponse.json({ nextPost }, { status: 200 });
   }),
+
+  // Table 
+  http.get(`${SERIES_API}/character/?page=1`, async ({ request, params }) => {
+   
+    return HttpResponse.json({
+        info: {},
+        results: [{
+            id: 1,
+            name: "Rick Sanchez",
+            status: "Alive",
+            species: "Human",
+            type: "",
+            gender: "Male",
+            origin: {
+                name: "Earth (C-137)",
+                url: "https://rickandmortyapi.com/api/location/1"
+            },
+            location: {
+                name: "Citadel of Ricks",
+                url: "https://rickandmortyapi.com/api/location/3"
+            },
+            image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+            episode: [],
+            url: "https://rickandmortyapi.com/api/character/1",
+            created: "2017-11-04T18:48:46.250Z"
+        }]
+    });
+})
 ];
