@@ -80,7 +80,7 @@ function Table() {
       <div>Table</div>
       <table>
         <thead>
-          {table.getHeaderGroups().map((headerGroup) => {
+          {table.getHeaderGroups().map((headerGroup, i) => {
             const headers = headerGroup.headers;
             return (
               <tr key={headerGroup.id} className="row-th">
@@ -99,6 +99,7 @@ function Table() {
                       {header.column.getCanFilter() ? (
                         <div>
                           <input
+                            data-testid='search'
                             type="text"
                             value={(columnFilterValue ?? '') as string}
                             onChange={e => header.column.setFilterValue(e.target.value)}
