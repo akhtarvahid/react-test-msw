@@ -50,7 +50,7 @@ export const handlers = [
     const pageIndex = parseInt(characterId);
     
     return HttpResponse.json({
-        info: { pages: 5, next: true },
+        info: { pages: 5, next: pageIndex<=5 ? url: null, prev: pageIndex <= 5 && pageIndex >=1 ? url: null },
         results: [charactersMock[pageIndex-1]]
     });
 })

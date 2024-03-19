@@ -42,7 +42,7 @@ describe("Table component", () => {
     // Render the component
     render(<Table />);
 
-    // firstEvent Next page
+    // firstEvent of Next page
     fireEvent.click(screen.getByText("Next"));
     await expect(screen.getByText("Loading...")).toBeInTheDocument();
     await waitFor(() => screen.getByText("Aqua Morty"));
@@ -52,11 +52,34 @@ describe("Table component", () => {
       expect(screen.getByText("First Page")).toBeEnabled();
     });
 
-    // firstEvent last page
+    // fireEvent of first page
+    fireEvent.click(screen.getByText(/First page/i));
+    await waitFor(() => screen.getByText("Rick Sanchez"));
+    expect(screen.getByText("Rick Sanchez")).toBeInTheDocument();
+    waitFor(() => {
+      expect(screen.getByText("Prev")).toBeDisabled();
+      expect(screen.getByText("First Page")).toBeDisabled();
+    });
+
+    // firstEvent of last page
     fireEvent.click(screen.getByText(/Last page/i));
     await expect(screen.getByText("Loading...")).toBeInTheDocument();
-    await waitFor(() => screen.getByText("Jerry Smith"));
+    await waitFor(() =>
+      expect(screen.getByText("Jerry Smith")).toBeInTheDocument()
+    );
+    waitFor(() => {
+      expect(screen.getByText("Next")).toBeDisabled();
+      expect(screen.getByText("Last Page")).toBeDisabled();
+    });
 
+    // fireEvent prev of Last button
+    fireEvent.click(screen.getByText(/Prev/i));
+    await waitFor(() => screen.getByText("Beth Smith"));
+    expect(screen.getByText("Beth Smith")).toBeInTheDocument();
+    waitFor(() => {
+      expect(screen.getByText("Prev")).toBeEnabled();
+      expect(screen.getByText("First Page")).toBeEnabled();
+    });
   });
 
   test("should render filtered/searched items on onchange", async () => {
