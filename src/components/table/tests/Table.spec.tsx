@@ -31,8 +31,11 @@ describe("Table component", () => {
   test("should render first and prev button as disabled ", async () => {
     // Render the component
     render(<Table />);
-    expect(screen.getByText('Prev')).toBeDisabled();
-    expect(screen.getByText('First Page')).toBeDisabled();
+
+    waitFor(() => {
+      expect(screen.getByRole("button", { name: "First Page" })).toBeDisabled();
+      expect(screen.getByText("Prev")).toBeDisabled();
+    });
   });
 
   test("render next page data after firing next page event", async () => {
@@ -43,6 +46,10 @@ describe("Table component", () => {
     await expect(screen.getByText("Loading...")).toBeInTheDocument();
     await waitFor(() => screen.getByText("Aqua Morty"));
     expect(screen.getByText("Aqua Morty")).toBeInTheDocument();
+    waitFor(() => {
+      expect(screen.getByText("Prev")).toBeEnabled();
+      expect(screen.getByText("First Page")).toBeEnabled();
+    });
   });
 
   test("should render filtered/searched items on onchange", async () => {
@@ -50,7 +57,7 @@ describe("Table component", () => {
     render(<Table />);
 
     const inputs = screen.getAllByRole("textbox");
-    screen.debug();
+    //screen.debug();
     inputs.forEach((input, i) =>
       fireEvent.change(input, { target: { value: `Alan ${i}` } })
     );

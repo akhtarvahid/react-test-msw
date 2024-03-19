@@ -147,14 +147,14 @@ function Table() {
         First page
       </button>
       <button
-        role={data?.info?.prev ? "disabled" : ""}
+        role={data?.info?.prev ? "" : "disabled"}
         disabled={data?.info?.prev ? false : true}
         onClick={() => setPageIndex((page: number) => page - 1)}
       >
         Prev
       </button>
       <button
-        role={data?.info?.next ? "disabled" : ""}
+        role={data?.info?.next ? "" : "disabled"}
         disabled={data?.info?.next ? false : true}
         onClick={() => setPageIndex((page: number) => page + 1)}
       >
