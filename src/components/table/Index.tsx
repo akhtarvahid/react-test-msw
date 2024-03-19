@@ -7,7 +7,7 @@ import {
   flexRender,
   SortingState,
   getSortedRowModel,
-  getFilteredRowModel
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 
 import "./style.css";
@@ -85,7 +85,7 @@ function Table() {
             return (
               <tr key={headerGroup.id} className="row-th">
                 {headers.map((header) => {
-                    const columnFilterValue = header.column.getFilterValue()
+                  const columnFilterValue = header.column.getFilterValue();
 
                   return (
                     <th
@@ -99,10 +99,11 @@ function Table() {
                       {header.column.getCanFilter() ? (
                         <div>
                           <input
-                            data-testid='search'
                             type="text"
-                            value={(columnFilterValue ?? '') as string}
-                            onChange={e => header.column.setFilterValue(e.target.value)}
+                            value={(columnFilterValue ?? "") as string}
+                            onChange={(e) =>
+                              header.column.setFilterValue(e.target.value)
+                            }
                             placeholder={`Search...`}
                             className="w-36 border shadow rounded"
                           />
@@ -135,11 +136,37 @@ function Table() {
         </tbody>
       </table>
       <hr />
-      <span>Page {pageIndex} of {data?.info?.pages}</span>
-       <button  disabled={pageIndex <= 1 ? true: false} onClick={()=> setPageIndex(1)}>First page</button>
-       <button  disabled={data?.info?.prev ? false: true} onClick={()=> setPageIndex((page: number) => page - 1)}>Prev</button>
-       <button  disabled={data?.info?.next ? false: true} onClick={()=> setPageIndex((page: number) => page + 1)}>Next</button>
-       <button  disabled={data?.info?.pages === pageIndex ? true: false} onClick={()=> setPageIndex(data?.info?.pages)}>Last page</button>
+      <span>
+        Page {pageIndex} of {data?.info?.pages}
+      </span>
+      <button
+        role={pageIndex <= 1 ? "disabled" : ""}
+        disabled={pageIndex <= 1 ? true : false}
+        onClick={() => setPageIndex(1)}
+      >
+        First page
+      </button>
+      <button
+        role={data?.info?.prev ? "disabled" : ""}
+        disabled={data?.info?.prev ? false : true}
+        onClick={() => setPageIndex((page: number) => page - 1)}
+      >
+        Prev
+      </button>
+      <button
+        role={data?.info?.next ? "disabled" : ""}
+        disabled={data?.info?.next ? false : true}
+        onClick={() => setPageIndex((page: number) => page + 1)}
+      >
+        Next
+      </button>
+      <button
+        role={data?.info?.pages === pageIndex ? "disabled" : ""}
+        disabled={data?.info?.pages === pageIndex ? true : false}
+        onClick={() => setPageIndex(data?.info?.pages)}
+      >
+        Last page
+      </button>
     </div>
   );
 }

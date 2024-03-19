@@ -28,6 +28,13 @@ describe("Table component", () => {
     expect(screen.getByText("Rick Sanchez")).toBeInTheDocument();
   });
 
+  test("should render first and prev button as disabled ", async () => {
+    // Render the component
+    render(<Table />);
+    expect(screen.getByText('Prev')).toBeDisabled();
+    expect(screen.getByText('First Page')).toBeDisabled();
+  });
+
   test("render next page data after firing next page event", async () => {
     // Render the component
     render(<Table />);
@@ -42,7 +49,7 @@ describe("Table component", () => {
     // Render the component
     render(<Table />);
 
-    const inputs = screen.getAllByTestId("search");
+    const inputs = screen.getAllByRole("textbox");
     screen.debug();
     inputs.forEach((input, i) =>
       fireEvent.change(input, { target: { value: `Alan ${i}` } })
@@ -51,6 +58,5 @@ describe("Table component", () => {
     inputs.forEach((input, i) =>
       expect(input).toHaveAttribute("value", `Alan ${i}`)
     );
-    screen.debug();
   });
 });
