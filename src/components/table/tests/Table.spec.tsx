@@ -42,6 +42,7 @@ describe("Table component", () => {
     // Render the component
     render(<Table />);
 
+    // firstEvent Next page
     fireEvent.click(screen.getByText("Next"));
     await expect(screen.getByText("Loading...")).toBeInTheDocument();
     await waitFor(() => screen.getByText("Aqua Morty"));
@@ -50,6 +51,12 @@ describe("Table component", () => {
       expect(screen.getByText("Prev")).toBeEnabled();
       expect(screen.getByText("First Page")).toBeEnabled();
     });
+
+    // firstEvent last page
+    fireEvent.click(screen.getByText(/Last page/i));
+    await expect(screen.getByText("Loading...")).toBeInTheDocument();
+    await waitFor(() => screen.getByText("Jerry Smith"));
+
   });
 
   test("should render filtered/searched items on onchange", async () => {
