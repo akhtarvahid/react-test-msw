@@ -1,6 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Table from "../Index";
 import { server } from "../../../mocks/server";
+import { SERIES_API } from "../../../utils/env";
+import { HttpResponse, http } from "msw";
 
 beforeAll(() => {
   // Start the interception.
@@ -95,5 +97,20 @@ describe("Table component", () => {
     inputs.forEach((input, i) =>
       expect(input).toHaveAttribute("value", `Alan ${i}`)
     );
+  });
+
+  test("should render error state if API fails/error occurred", async () => {
+    server.use(
+      http.get(`${SERIES_API}`, async () => {
+        return HttpResponse.error();
+      })
+    );
+    // Render the component
+    render(<Table />);
+
+    waitFor(() => {
+      const error = screen.findByText("Error loading data");
+      expect(error).toBeInTheDocument();
+    });
   });
 });
