@@ -3,10 +3,10 @@ import { useDeleteBook, usePostBook, useUpdateBook } from "./hooks/useCrud";
 import BookList from "./BookList";
 import AddBook from "./AddBook";
 import { Book, BookResponse } from "../../types/common-types";
-import UpdateBook from "./UpdateBook";
 import useSWR, { mutate } from "swr";
 import { LIBRARY_API } from "../library-management/constant";
 import './style.css';
+import EditModal from "./EditModal";
 
 const CrudWithSWR = () => {
   const [selected, setSelected] = useState<BookResponse | null>(null);
@@ -25,7 +25,7 @@ const CrudWithSWR = () => {
       await addBookToStore(book);
     } catch (err) {}
   };
-  const handleUpateBook = async (book: BookResponse) => {
+  const handleUpdateBook = async (book: BookResponse) => {
     const modifiedBooks = booksFromStore.map((b: BookResponse) =>
       b.id === book.id ? book : b
     );
@@ -52,12 +52,13 @@ const CrudWithSWR = () => {
   }
 
   return (
-    <div>
+    <div className="main">
+    <div className="wrapper">
       <h2>Add Book To Store</h2>
       {!selected ? (
         <AddBook onAddBook={handleAddBook} />
       ) : (
-        <UpdateBook onUpdateBook={handleUpateBook} selected={selected} />
+        <EditModal onUpdateBook={handleUpdateBook} selected={selected}  />
       )}
       {isLoading ? (
         <h2>Loading...</h2>
@@ -69,6 +70,7 @@ const CrudWithSWR = () => {
           handleDeleteBook={handleDeleteBook}
         />
       )}
+    </div>
     </div>
   );
 };

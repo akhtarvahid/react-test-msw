@@ -1,12 +1,12 @@
 import './App.css';
 import NavBar from './components/common/navbar/NavBar';
-import Table from './components/table/Index';
+import CrudWithSWR from './components/crud-swr';
 
 function App() {
   return (
     <div className="App" data-testid="app">
-       <NavBar title="Table" />
-       <Table />
+       <NavBar title="SWR" />
+       <CrudWithSWR />
     </div>
   );
 }
