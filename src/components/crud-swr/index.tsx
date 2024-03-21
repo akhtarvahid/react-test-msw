@@ -5,14 +5,16 @@ import AddBook from "./AddBook";
 import { Book, BookResponse } from "../../types/common-types";
 import useSWR, { mutate } from "swr";
 import { LIBRARY_API } from "../library-management/constant";
-import './style.css';
+import "./style.css";
 import EditModal from "./EditModal";
 
 const CrudWithSWR = () => {
   const [selected, setSelected] = useState<BookResponse | null>(null);
-  const { data: books, isLoading } = useSWR(LIBRARY_API);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const { data: books } = useSWR(LIBRARY_API);
   const { addBookToStore, createError } = usePostBook();
-  const { updateBookToStore, updateError } = useUpdateBook();
+  const { updateBookToStore, updateError, isUpdating } = useUpdateBook();
   const { deleteBookFromStore, deleteError } = useDeleteBook();
 
   const booksFromStore = useMemo(() => {
@@ -35,6 +37,7 @@ const CrudWithSWR = () => {
         requestBody: book,
         queryParams: { id: book.id },
       });
+      setShowPopup(false);
     } catch (err) {}
 
     setSelected(null);
@@ -53,24 +56,27 @@ const CrudWithSWR = () => {
 
   return (
     <div className="main">
-    <div className="wrapper">
-      <h2>Add Book To Store</h2>
-      {!selected ? (
+      <div className="wrapper">
+        <h2>Add Book To Store</h2>
         <AddBook onAddBook={handleAddBook} />
-      ) : (
-        <EditModal onUpdateBook={handleUpdateBook} selected={selected}  />
-      )}
-      {isLoading ? (
-        <h2>Loading...</h2>
-      ) : (
+        {showPopup && (
+          <EditModal
+            onUpdateBook={handleUpdateBook}
+            selected={selected}
+            showPopup={showPopup}
+            setShowPopup={setShowPopup}
+            isUpdating={isUpdating}
+          />
+        )}
+
         <BookList
           title="Books Available"
           books={[...booksFromStore].reverse()}
           setSelected={setSelected}
           handleDeleteBook={handleDeleteBook}
+          setShowPopup={setShowPopup}
         />
-      )}
-    </div>
+      </div>
     </div>
   );
 };

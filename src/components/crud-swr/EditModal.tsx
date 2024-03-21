@@ -5,8 +5,17 @@ import { Book, BookResponse } from "../../types/common-types";
 type EditModal = {
   onUpdateBook: React.Dispatch<BookResponse>;
   selected: BookResponse | null;
+  showPopup: boolean;
+  setShowPopup: React.Dispatch<boolean>;
+  isUpdating: boolean;
 };
-const EditModal: React.FC<EditModal> = ({ onUpdateBook, selected }) => {
+const EditModal: React.FC<EditModal> = ({
+  onUpdateBook,
+  selected,
+  showPopup,
+  setShowPopup,
+  isUpdating,
+}) => {
   const [form, setForm] = useState<Book>({
     title: selected?.title || "",
     author: selected?.author || "",
@@ -33,14 +42,15 @@ const EditModal: React.FC<EditModal> = ({ onUpdateBook, selected }) => {
   };
   return (
     <Modal
-      show={selected ? true : false}
+      show={showPopup}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      onHide={() => setShowPopup(false)}
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Edit {"selected?.title"}
+          Edit {selected?.title}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -81,11 +91,12 @@ const EditModal: React.FC<EditModal> = ({ onUpdateBook, selected }) => {
       <Modal.Footer>
         <Button
           variant="primary"
+          disabled={isUpdating}
           type="submit"
           name="Update"
           onClick={submitHandler}
         >
-          Update
+          {isUpdating ? "Updating..." : "Update"}
         </Button>
       </Modal.Footer>
     </Modal>
