@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { Book, BookResponse } from "../../types/common-types";
 
-type EditModal = {
+type EditModalProps = {
   onUpdateBook: React.Dispatch<BookResponse>;
   selected: BookResponse | null;
   showPopup: boolean;
   setShowPopup: React.Dispatch<boolean>;
   isUpdating: boolean;
 };
-const EditModal: React.FC<EditModal> = ({
+const EditModal: React.FC<EditModalProps> = ({
   onUpdateBook,
   selected,
   showPopup,
