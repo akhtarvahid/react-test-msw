@@ -17,10 +17,10 @@
     cursor: pointer;
 }
 .badges span:first-child {
-    background: green !important;
+    background: #1b9a1b !important;
 }
 .badges span:last-child {
-    background: red !important;
+    background: #e25252 !important;
 }
 .books-title {
     margin: 45px 0px 40px 0;

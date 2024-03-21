@@ -35,7 +35,7 @@ const BookList: React.FC<{
               >
                 Edit
               </Badge>
-              <Badge bg="secondary" onClick={() => handleDeleteBook(book.id)}>
+              <Badge bg="secondary" onClick={() => handleDeleteBook(book.id)} pill>
                 Delete
               </Badge>
             </div>
