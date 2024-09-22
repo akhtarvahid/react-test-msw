@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
-import { Book } from "../../types/common-types";
+import { Book } from "../types/common-types";
 
 type CreateProps = {
   onAddBook: React.Dispatch<Book>;

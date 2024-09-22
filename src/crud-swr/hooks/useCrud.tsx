@@ -1,6 +1,6 @@
-import { Book } from "../../../types/common-types";
-import { LIBRARY_API } from "../../library-management/constant";
 import useSWRMutation from "swr/mutation";
+import { Book } from "../../types/common-types";
+import { LIBRARY_API } from "../../utils/env";
 
 interface PutRequestArgs {
   requestBody: Book;

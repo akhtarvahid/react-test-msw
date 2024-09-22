@@ -1,6 +1,6 @@
 import ListGroup from "react-bootstrap/ListGroup";
-import { BookResponse } from "../../types/common-types";
 import Badge from "react-bootstrap/Badge";
+import { BookResponse } from "../types/common-types";
 
 const BookList: React.FC<{
   title: string;
